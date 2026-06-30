@@ -14,7 +14,7 @@ const apiConfig = {
       },
       {
         id: "specialization",
-        lable: "Specialization",
+        label: "Specialization",
         options: ["Cardiologist", "Dermatologist", "Neurologist", "Orthopedic"],
       },
     ],
