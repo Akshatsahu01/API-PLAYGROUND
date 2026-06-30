@@ -1,0 +1,34 @@
+/* ===========================
+   Response Viewer
+=========================== */
+
+.response-viewer {
+  margin-top: 2rem;
+}
+
+.response-title {
+  margin-bottom: 0.8rem;
+
+  font-size: 1rem;
+  font-weight: 600;
+
+  color: #111;
+}
+
+.response-container {
+  min-height: 350px;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+
+  background: #fafafa;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.response-placeholder {
+  color: #777;
+  font-size: 1rem;
+}
