@@ -1,6 +1,7 @@
 const apiConfig = {
   doctors: {
     endpoint: "/doctors",
+    label:"Doctors",
     filters: [
       {
         id: "experience",
@@ -22,6 +23,7 @@ const apiConfig = {
 
     patients: {
     endpoint: "/patients",
+    label:"Patients",
     filters: [
       {
         id: "gender",
