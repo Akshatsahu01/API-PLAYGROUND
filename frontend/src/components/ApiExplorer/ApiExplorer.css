@@ -1,0 +1,365 @@
+/* ======================================================
+   API Explorer
+====================================================== */
+
+.api-explorer {
+    width: 100%;
+    padding: 2rem;
+}
+
+.api-container {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 1.75rem;
+}
+
+/* ======================================================
+   Heading
+====================================================== */
+
+.api-container h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+/* ======================================================
+   API Tabs
+====================================================== */
+
+.api-tabs {
+    display: flex;
+    gap: 2rem;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: .75rem;
+    margin-bottom: 1.5rem;
+}
+
+.api-tabs button {
+    background: transparent;
+    border: none;
+    padding-bottom: .7rem;
+    font-size: 1rem;
+    color: #666;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.api-tabs button:hover {
+    color: black;
+}
+
+.active-tab {
+    color: black !important;
+    border-bottom: 2px solid black;
+}
+
+/* ======================================================
+   Filter Panel
+====================================================== */
+
+.filter-panel {
+    margin-bottom: 1.5rem;
+}
+
+/* ---------- Header ---------- */
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+}
+
+.filter-header h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: .75rem;
+}
+
+/* ---------- Buttons ---------- */
+
+.reset-btn,
+.apply-btn {
+
+    height: 42px;
+
+    padding: 0 1.3rem;
+
+    border-radius: 8px;
+
+    font-size: .95rem;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.reset-btn {
+
+    background: white;
+
+    border: 1px solid #dcdcdc;
+
+    color: black;
+}
+
+.reset-btn:hover {
+
+    background: #f4f4f4;
+}
+
+.apply-btn {
+
+    background: black;
+
+    border: none;
+
+    color: white;
+}
+
+.apply-btn:hover {
+
+    background: #222;
+}
+
+/* ======================================================
+   Filter Grid
+====================================================== */
+
+.filter-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 1rem;
+}
+
+.filter-item {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.filter-item label {
+
+    margin-bottom: .45rem;
+
+       font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+
+}
+
+.filter-item select {
+
+    width: 100%;
+
+    height: 42px;
+
+    padding: 0 .85rem;
+
+    border: 1px solid #dcdcdc;
+
+    border-radius: 8px;
+
+    background: white;
+
+    font-size: .95rem;
+
+    outline: none;
+
+    transition: .2s;
+}
+
+.filter-item select:focus {
+
+    border-color: black;
+}
+
+/* ======================================================
+   URL Section
+====================================================== */
+
+.url-section {
+
+    margin-top: 1.75rem;
+}
+
+.url-section label {
+
+    display: block;
+
+    margin-bottom: .6rem;
+
+    font-weight: 600;
+}
+
+.url-row {
+
+    display: flex;
+
+    gap: .75rem;
+}
+
+.url-row input {
+
+    flex: 1;
+
+    height: 42px;
+
+    padding: 0 1rem;
+
+    border: 1px solid #dcdcdc;
+
+    border-radius: 8px;
+
+    background: #fafafa;
+
+    font-size: .95rem;
+}
+
+.url-row input:focus {
+
+    outline: none;
+
+    border-color: black;
+}
+
+.url-row button {
+
+    width: 150px;
+
+    height: 42px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: black;
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.url-row button:hover {
+
+    background: #222;
+}
+
+/* ======================================================
+   Response Viewer
+====================================================== */
+
+.response-viewer {
+
+    margin-top: 1.75rem;
+}
+
+.response-title {
+
+    margin-bottom: .75rem;
+
+    font-size: 1.05rem;
+
+    font-weight: 600;
+}
+
+.response-container {
+
+    min-height: 180px;
+
+    border: 1px dashed #d8d8d8;
+
+    border-radius: 10px;
+
+    background: #fafafa;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+.response-placeholder {
+
+    color: #777;
+
+    font-size: .95rem;
+}
+
+/* ======================================================
+   Responsive
+====================================================== */
+
+@media (max-width: 1000px) {
+
+    .filter-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .api-explorer {
+
+        padding: 1rem;
+    }
+
+    .api-container {
+
+        padding: 1.25rem;
+    }
+
+    .filter-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 1rem;
+    }
+
+    .filter-buttons {
+
+        width: 100%;
+
+        justify-content: flex-end;
+    }
+
+    .filter-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .url-row {
+
+        flex-direction: column;
+    }
+
+    .url-row button {
+
+        width: 100%;
+    }
+
+    .reset-btn,
+    .apply-btn {
+
+        flex: 1;
+    }
+
+}

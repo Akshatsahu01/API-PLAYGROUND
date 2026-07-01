@@ -26,8 +26,21 @@ function ApiExplorer() {
         <div className="filter-panel">
           <div className="filter-header">
             <h3>Filters to apply on URL</h3>
-            <button className="reset-btn">reset filters</button>
+                <div className="filter-buttons">
+
+      <button className="reset-btn">
+        Reset Filters
+      </button>
+
+      <button className="apply-btn">
+        Apply Filters
+      </button>
+
+    </div>
           </div>
+           <div className="filter-grid">
+
+            
           {currentApi.filters.map((filter) => (
             <div className="filter-item" key={filter.id}>
               <label htmlFor={filter.id}>{filter.label}</label>
@@ -41,14 +54,9 @@ function ApiExplorer() {
               </select>
             </div>
           ))}
+           </div>
         </div>
-        <div className="filter-actions">
 
-  <button className="apply-btn">
-    Apply Filters
-  </button>
-
-</div>
        {/* URL Section */}
         <div className="url-section">
             <label >Final URL</label>
