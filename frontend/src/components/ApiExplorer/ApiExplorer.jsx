@@ -6,6 +6,48 @@ import { useState } from "react";
 function ApiExplorer() {
   const [selectedApi, setSelectedApi] = useState("doctors");
   const currentApi = apiConfig[selectedApi];
+  const [selectedFilters, setSelectedFilters] = useState({});
+  const [generatedUrl, setGeneratedUrl] = useState(
+  `https://api-playground.com${currentApi.endpoint}`
+)
+  function handleFilterChange(event) {
+    const { id, value } = event.target;
+
+    setSelectedFilters((previousFilters) => {
+        if(value===""){
+            const updatedFilters={...previousFilters}
+            delete updatedFilters[id]
+            return updatedFilters
+        }
+        return {
+
+            ...previousFilters,
+            [id]: value,  //without square breaket id will not be treated as a veriable
+        }
+    });
+  }
+  function handleApplyFilters() {
+
+  const queryParams = Object.entries(selectedFilters)
+    .filter(([key, value]) => value !== "")
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join("&");
+
+  const url =
+    queryParams.length > 0
+      ? `https://api-playground.com${currentApi.endpoint}?${queryParams}`
+      : `https://api-playground.com${currentApi.endpoint}`;
+
+  setGeneratedUrl(url);
+}
+
+function handleResetFilters() {
+  setSelectedFilters({});
+
+  setGeneratedUrl(
+    `https://api-playground.com${currentApi.endpoint}`
+  );
+}
   return (
     <section className="api-explorer">
       <div className="api-container">
@@ -17,7 +59,11 @@ function ApiExplorer() {
             <button
               key={api}
               className={selectedApi === api ? "active-tab" : ""}
-              onClick={() => setSelectedApi(api)}
+              onClick={() =>{ 
+                  setSelectedApi(api)
+                  setSelectedFilters({});
+                  setGeneratedUrl(`https://api-playground.com${apiConfig[api].endpoint}`);
+              }}
             >
               {apiConfig[api].label}
             </button>
@@ -26,52 +72,54 @@ function ApiExplorer() {
         <div className="filter-panel">
           <div className="filter-header">
             <h3>Filters to apply on URL</h3>
-                <div className="filter-buttons">
+            <div className="filter-buttons">
+              <button className="reset-btn" onClick={handleResetFilters}>Reset Filters</button>
 
-      <button className="reset-btn">
-        Reset Filters
-      </button>
+              <button className="apply-btn" onClick={((event)=>{
 
-      <button className="apply-btn">
-        Apply Filters
-      </button>
+                handleFilterChange(event)
+                handleApplyFilters()
 
-    </div>
+              })}>Apply Filters</button>
+            </div>
           </div>
-           <div className="filter-grid">
+          <div className="filter-grid">
+            {currentApi.filters.map((filter) => (
+              <div className="filter-item" key={filter.id}>
+                <label htmlFor={filter.id}>{filter.label}</label>
 
-            
-          {currentApi.filters.map((filter) => (
-            <div className="filter-item" key={filter.id}>
-              <label htmlFor={filter.id}>{filter.label}</label>
+                <select
+                  id={filter.id}
+                  value={selectedFilters[filter.id] || ""}
+                  onChange={handleFilterChange}
+                >
+                  <option value="">Select {filter.label}</option>
 
-              <select id={filter.id}>
-                <option>Select {filter.label}</option>
-
-                {filter.options.map((option) => (
-                  <option key={option}>{option}</option>
-                ))}
-              </select>
-            </div>
-          ))}
-           </div>
+                  {filter.options.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
+                </select>
+              </div>
+            ))}
+          </div>
         </div>
 
-       {/* URL Section */}
+        {/* URL Section */}
         <div className="url-section">
-            <label >Final URL</label>
-            <div className="url-row">
-                <input type="text" value={`https://api-playground.com${currentApi.endpoint}`} readOnly />
-                <button>fetch data</button>
-            </div>
- 
+          <label>Final URL</label>
+          <div className="url-row">
+            <input
+              type="text"
+              value={generatedUrl}
+              readOnly
+            />
+            <button>fetch data</button>
+          </div>
         </div>
-           {/* Response Section */}
-           <ResponseViewer/>
+        {/* Response Section */}
+        <ResponseViewer />
       </div>
-
-
-
+      {console.log(selectedFilters)}
     </section>
   );
 }
