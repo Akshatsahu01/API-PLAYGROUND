@@ -7,6 +7,7 @@ function ApiExplorer() {
   const [selectedApi, setSelectedApi] = useState("doctors");
   const currentApi = apiConfig[selectedApi];
   const [selectedFilters, setSelectedFilters] = useState({});
+  const [url,setUrl]=useState("")
   function handleFilterChange(event) {
     const { id, value } = event.target;
 
@@ -23,6 +24,15 @@ function ApiExplorer() {
         }
     });
   }
+  function createUrl() {
+    let newUrl = "?";
+
+    Object.entries(selectedFilters).forEach(([key, value]) => {
+        newUrl += `&${key}=${value}`;
+    });
+
+    setUrl(newUrl);
+}
   return (
     <section className="api-explorer">
       <div className="api-container">
@@ -46,7 +56,12 @@ function ApiExplorer() {
             <div className="filter-buttons">
               <button className="reset-btn">Reset Filters</button>
 
-              <button className="apply-btn">Apply Filters</button>
+              <button className="apply-btn" onClick={((event)=>{
+
+                handleFilterChange(event)
+                createUrl()
+
+              })}>Apply Filters</button>
             </div>
           </div>
           <div className="filter-grid">
@@ -76,7 +91,7 @@ function ApiExplorer() {
           <div className="url-row">
             <input
               type="text"
-              value={`https://api-playground.com${currentApi.endpoint}`}
+              value={`https://api-playground.com${currentApi.endpoint}${url}`}
               readOnly
             />
             <button>fetch data</button>
