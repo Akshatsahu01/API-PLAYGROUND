@@ -7,7 +7,9 @@ function ApiExplorer() {
   const [selectedApi, setSelectedApi] = useState("doctors");
   const currentApi = apiConfig[selectedApi];
   const [selectedFilters, setSelectedFilters] = useState({});
-  const [url,setUrl]=useState("")
+  const [generatedUrl, setGeneratedUrl] = useState(
+  `https://api-playground.com${currentApi.endpoint}`
+)
   function handleFilterChange(event) {
     const { id, value } = event.target;
 
@@ -24,14 +26,27 @@ function ApiExplorer() {
         }
     });
   }
-  function createUrl() {
-    let newUrl = "?";
+  function handleApplyFilters() {
 
-    Object.entries(selectedFilters).forEach(([key, value]) => {
-        newUrl += `&${key}=${value}`;
-    });
+  const queryParams = Object.entries(selectedFilters)
+    .filter(([key, value]) => value !== "")
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join("&");
 
-    setUrl(newUrl);
+  const url =
+    queryParams.length > 0
+      ? `https://api-playground.com${currentApi.endpoint}?${queryParams}`
+      : `https://api-playground.com${currentApi.endpoint}`;
+
+  setGeneratedUrl(url);
+}
+
+function handleResetFilters() {
+  setSelectedFilters({});
+
+  setGeneratedUrl(
+    `https://api-playground.com${currentApi.endpoint}`
+  );
 }
   return (
     <section className="api-explorer">
@@ -44,7 +59,11 @@ function ApiExplorer() {
             <button
               key={api}
               className={selectedApi === api ? "active-tab" : ""}
-              onClick={() => setSelectedApi(api)}
+              onClick={() =>{ 
+                  setSelectedApi(api)
+                  setSelectedFilters({});
+                  setGeneratedUrl(`https://api-playground.com${apiConfig[api].endpoint}`);
+              }}
             >
               {apiConfig[api].label}
             </button>
@@ -54,12 +73,12 @@ function ApiExplorer() {
           <div className="filter-header">
             <h3>Filters to apply on URL</h3>
             <div className="filter-buttons">
-              <button className="reset-btn">Reset Filters</button>
+              <button className="reset-btn" onClick={handleResetFilters}>Reset Filters</button>
 
               <button className="apply-btn" onClick={((event)=>{
 
                 handleFilterChange(event)
-                createUrl()
+                handleApplyFilters()
 
               })}>Apply Filters</button>
             </div>
@@ -91,7 +110,7 @@ function ApiExplorer() {
           <div className="url-row">
             <input
               type="text"
-              value={`https://api-playground.com${currentApi.endpoint}${url}`}
+              value={generatedUrl}
               readOnly
             />
             <button>fetch data</button>
