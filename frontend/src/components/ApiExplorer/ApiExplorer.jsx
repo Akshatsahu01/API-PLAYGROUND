@@ -10,10 +10,18 @@ function ApiExplorer() {
   function handleFilterChange(event) {
     const { id, value } = event.target;
 
-    setSelectedFilters((previousFilters) => ({
-      ...previousFilters,
-      [id]: value,  //without square breaket id will not be treated as a veriable
-    }));
+    setSelectedFilters((previousFilters) => {
+        if(value===""){
+            const updatedFilters={...previousFilters}
+            delete updatedFilters[id]
+            return updatedFilters
+        }
+        return {
+
+            ...previousFilters,
+            [id]: value,  //without square breaket id will not be treated as a veriable
+        }
+    });
   }
   return (
     <section className="api-explorer">
