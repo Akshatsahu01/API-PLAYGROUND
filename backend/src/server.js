@@ -1,15 +1,20 @@
 import app from "./app.js"
-import dotenv from "dotenv"
-import path from "path";
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import "./config/env.js"
+import pool from "./config/db.js"
 
-dotenv.config({
-    path: path.join(__dirname, "../.env")
-});
 console.log(process.cwd())
 const port=process.env.PORT
-app.listen(port,()=>{
+
+async function startserver(){
+    try{
+         await pool.query("SELECT NOW()")
+         console.log("Postgresql server is running successsfully")
+         app.listen(port,()=>{
     console.log(`server is running on port ${port}`)
 })
+    }catch(err){
+            console.log(`error  is : ${err}`)
+    }
+}
+startserver()
+
