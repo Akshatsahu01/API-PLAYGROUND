@@ -1,5 +1,5 @@
-import app from "./app.js"
 import "./config/env.js"
+import app from "./app.js"
 import pool from "./config/db.js"
 
 console.log(process.cwd())
