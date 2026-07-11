@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import doctorRoutes from "./routes/doctorRoutes.js";
 
 const app = express();
 
@@ -13,5 +14,6 @@ app.get("/", (req, res) => {
     message: "API Playground Backend Running 🚀",
   });
 });
+app.use("/api/doctors", doctorRoutes);
 
 export default app;
