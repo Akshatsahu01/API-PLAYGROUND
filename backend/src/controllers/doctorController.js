@@ -2,7 +2,7 @@ import doctorServices from "../services/doctorServices.js";
 
 async function getAllDoctors(req, res) {
   try {
-    const doctors = await doctorServices.getAllDoctors();
+    const doctors = await doctorServices.getAllDoctors(req.query);
 
     res.status(200).json(doctors);
   } catch (error) {
