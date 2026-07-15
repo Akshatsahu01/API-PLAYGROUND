@@ -39,9 +39,18 @@ const apiConfig = {
         id: "doctorAssigned",
         label: "Doctor Assigned",
         options: [
-          "Dr. Rahul",
-          "Dr. Priya",
-          "Dr. Amit",
+        {
+          label:"Dr. Rahul",
+          value:1
+        },
+        {
+         label:"Dr. priya",
+         value:2
+        },
+        {
+          label:"Dr. Amit",
+          value:3
+        }
         ],
       },
       {

@@ -95,9 +95,14 @@ function handleResetFilters() {
                 >
                   <option value="">Select {filter.label}</option>
 
-                  {filter.options.map((option) => (
-                    <option key={option}>{option}</option>
-                  ))}
+                  {filter.options.map((option) => {
+                    const value=typeof option==="object" ? option.value : option
+                    const lable=typeof option==="object" ? option.label: option
+                    return  (
+                      <option key={value} value={value}>{lable}</option>
+
+                    )
+                  })}
                 </select>
               </div>
             ))}
