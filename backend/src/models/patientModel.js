@@ -30,8 +30,8 @@ async function getAllPatients(filters){
         }
     }
         if(filters.doctorAssigned){
-        conditions.push(`doctor_assigned=$${values.length+1}`);
-        values.push(filters.doctorAssigned)
+        conditions.push(`doctor_id=$${values.length+1}`);  //if later we change doctorAssigned to assigneddoctor we don't have to change the patient schema .Our schema will have doctor_id as foreign key 
+        values.push(Number(filters.doctorAssigned))  //value is stored as string 
     }
     if (filters.amountToBePaid) {
   if (filters.amountToBePaid === "< ₹1000") {
