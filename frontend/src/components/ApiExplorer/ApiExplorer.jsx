@@ -8,8 +8,34 @@ function ApiExplorer() {
   const currentApi = apiConfig[selectedApi];
   const [selectedFilters, setSelectedFilters] = useState({});
   const [generatedUrl, setGeneratedUrl] = useState(
-  `https://api-playground.com${currentApi.endpoint}`
+  `http://localhost:3000/api${currentApi.endpoint}`
 )
+  const [responseData, setResponseData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  async function handleFetchData() {
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await fetch(generatedUrl);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const data = await response.json();
+
+      setResponseData(data);
+
+      console.log("data fetched : ",data);
+
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+}
   function handleFilterChange(event) {
     const { id, value } = event.target;
 
@@ -35,8 +61,8 @@ function ApiExplorer() {
 
   const url =
     queryParams.length > 0
-      ? `https://api-playground.com${currentApi.endpoint}?${queryParams}`
-      : `https://api-playground.com${currentApi.endpoint}`;
+      ? `http://localhost:3000/api${currentApi.endpoint}?${queryParams}`
+      : `http://localhost:3000/api${currentApi.endpoint}`;
 
   setGeneratedUrl(url);
 }
@@ -45,13 +71,13 @@ function handleResetFilters() {
   setSelectedFilters({});
 
   setGeneratedUrl(
-    `https://api-playground.com${currentApi.endpoint}`
+    `http://localhost:3000/api${currentApi.endpoint}`
   );
 }
   return (
     <section className="api-explorer">
       <div className="api-container">
-        <h2>Available APIs</h2>
+        <h2>Availabel APIs</h2>
         {/* API Tab start from here */}
 
         <div className="api-tabs">
@@ -62,7 +88,7 @@ function handleResetFilters() {
               onClick={() =>{ 
                   setSelectedApi(api)
                   setSelectedFilters({});
-                  setGeneratedUrl(`https://api-playground.com${apiConfig[api].endpoint}`);
+                  setGeneratedUrl(`http://localhost:3000/api${apiConfig[api].endpoint}`);
               }}
             >
               {apiConfig[api].label}
@@ -75,12 +101,7 @@ function handleResetFilters() {
             <div className="filter-buttons">
               <button className="reset-btn" onClick={handleResetFilters}>Reset Filters</button>
 
-              <button className="apply-btn" onClick={((event)=>{
-
-                handleFilterChange(event)
-                handleApplyFilters()
-
-              })}>Apply Filters</button>
+              <button className="apply-btn" onClick={handleApplyFilters}>Apply Filters</button>
             </div>
           </div>
           <div className="filter-grid">
@@ -97,9 +118,9 @@ function handleResetFilters() {
 
                   {filter.options.map((option) => {
                     const value=typeof option==="object" ? option.value : option
-                    const lable=typeof option==="object" ? option.label: option
+                    const label=typeof option==="object" ? option.label: option
                     return  (
-                      <option key={value} value={value}>{lable}</option>
+                      <option key={value} value={value}>{label}</option>
 
                     )
                   })}
@@ -118,11 +139,11 @@ function handleResetFilters() {
               value={generatedUrl}
               readOnly
             />
-            <button>fetch data</button>
+            <button onClick={handleFetchData}>fetch data</button>
           </div>
         </div>
         {/* Response Section */}
-        <ResponseViewer />
+        <ResponseViewer data={responseData} loading={loading} error={error}/>
       </div>
       {console.log(selectedFilters)}
     </section>
