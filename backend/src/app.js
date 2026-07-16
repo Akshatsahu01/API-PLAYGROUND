@@ -16,6 +16,6 @@ app.get("/", (req, res) => {
   });
 });
 app.use("/api/doctors", doctorRoutes);
-app.use("/api/patient",patientRoutes)
+app.use("/api/patients",patientRoutes)
 
 export default app;
