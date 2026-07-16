@@ -10,6 +10,32 @@ function ApiExplorer() {
   const [generatedUrl, setGeneratedUrl] = useState(
   `http://localhost:3000/api${currentApi.endpoint}`
 )
+  const [responseData, setResponseData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  async function handleFetchData() {
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await fetch(generatedUrl);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const data = await response.json();
+
+      setResponseData(data);
+
+      console.log("data fetched : ",data);
+
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+}
   function handleFilterChange(event) {
     const { id, value } = event.target;
 
@@ -113,11 +139,11 @@ function handleResetFilters() {
               value={generatedUrl}
               readOnly
             />
-            <button>fetch data</button>
+            <button onClick={handleFetchData}>fetch data</button>
           </div>
         </div>
         {/* Response Section */}
-        <ResponseViewer />
+        <ResponseViewer data={responseData} loading={loading} error={error}/>
       </div>
       {console.log(selectedFilters)}
     </section>
