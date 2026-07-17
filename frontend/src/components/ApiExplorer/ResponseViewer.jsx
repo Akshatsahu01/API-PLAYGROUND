@@ -1,16 +1,42 @@
 import "./ResponseViewer.css"
 
-function ResponseViewer(){
-    return(
-        <section className="response-viewer">
-            <h1 className="response-title">Response</h1>
-            <div className="response-container">
-                <p className="response-placeholder">
-                    No data fetched yet 
-                </p>
-            </div>
-        </section>
-    )
+function ResponseViewer({data,loading,error}){
+ if (loading) {
+    return (
+      <div className="response-viewer">
+        <h3>Response</h3>
+        <p>Fetching data...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="response-viewer">
+        <h3>Response</h3>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="response-viewer">
+        <h3>Response</h3>
+        <p>No response yet.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="response-viewer">
+      <h3>Response</h3>
+
+      <pre>
+        {JSON.stringify(data, null, 2)}
+      </pre>
+    </div>
+  );
 }
 
 export default ResponseViewer
