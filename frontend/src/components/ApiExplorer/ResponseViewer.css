@@ -3,32 +3,47 @@
 =========================== */
 
 .response-viewer {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  overflow: hidden;
 }
 
-.response-title {
-  margin-bottom: 0.8rem;
+.response-viewer h3 {
+  margin: 0;
+  padding: 0.9rem 1.2rem;
 
   font-size: 1rem;
   font-weight: 600;
 
-  color: #111;
-}
-
-.response-container {
-  min-height: 350px;
-
-  border: 1px solid #e5e5e5;
-  border-radius: 10px;
-
+  border-bottom: 1px solid #e5e7eb;
   background: #fafafa;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-.response-placeholder {
-  color: #777;
-  font-size: 1rem;
+.response-viewer p {
+  padding: 2rem;
+
+  text-align: center;
+  color: #6b7280;
+}
+
+.response-viewer pre {
+  margin: 0;
+  padding: 1.25rem;
+
+  max-height: 450px;
+  overflow: auto;
+
+  font-size: 0.9rem;
+  line-height: 1.7;
+  font-family: Consolas, Monaco, "Courier New", monospace;
+
+  color: #374151;
+  background: #fcfcfc;
+
+  white-space: pre-wrap;
+  word-break: break-word;
 }
