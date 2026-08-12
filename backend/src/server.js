@@ -3,7 +3,7 @@ import app from "./app.js"
 import pool from "./config/db.js"
 
 console.log(process.cwd())
-const port=process.env.PORT
+const port=process.env.PORT || 3000
 
 async function startserver(){
     try{
