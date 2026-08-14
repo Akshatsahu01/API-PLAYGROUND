@@ -8,7 +8,7 @@ function ApiExplorer() {
   const currentApi = apiConfig[selectedApi];
   const [selectedFilters, setSelectedFilters] = useState({});
   const [generatedUrl, setGeneratedUrl] = useState(
-  `http://localhost:3000/api${currentApi.endpoint}`
+  `${import.meta.env.VITE_API_URL}/api${currentApi.endpoint}`
 )
   const [responseData, setResponseData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -61,8 +61,8 @@ function ApiExplorer() {
 
   const url =
     queryParams.length > 0
-      ? `http://localhost:3000/api${currentApi.endpoint}?${queryParams}`
-      : `http://localhost:3000/api${currentApi.endpoint}`;
+      ? `${import.meta.env.VITE_API_URL}/api${currentApi.endpoint}?${queryParams}`
+      : `${import.meta.env.VITE_API_URL}/api${currentApi.endpoint}`;
 
   setGeneratedUrl(url);
 }
@@ -71,7 +71,7 @@ function handleResetFilters() {
   setSelectedFilters({});
 
   setGeneratedUrl(
-    `http://localhost:3000/api${currentApi.endpoint}`
+    `${import.meta.env.VITE_API_URL}/api${currentApi.endpoint}`
   );
 }
   return (
@@ -88,7 +88,7 @@ function handleResetFilters() {
               onClick={() =>{ 
                   setSelectedApi(api)
                   setSelectedFilters({});
-                  setGeneratedUrl(`http://localhost:3000/api${apiConfig[api].endpoint}`);
+                  setGeneratedUrl(`${import.meta.env.VITE_API_URL}/api${apiConfig[api].endpoint}`);
               }}
             >
               {apiConfig[api].label}
