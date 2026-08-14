@@ -13,9 +13,9 @@ async function getAllDoctors(filters) {
   }
 
   // Filter: Availability
-  if (filters.available) {
+  if (filters.availability) {
     conditions.push(`available = $${values.length + 1}`);
-    values.push(filters.available === "true");
+    values.push(filters.availability === "Available");
   }
 
   // Filter: Experience
