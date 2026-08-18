@@ -79,7 +79,7 @@ function handleResetFilters() {
     <>
     <section className="api-explorer">
       <div className="api-container">
-        <h2>Availabel APIs</h2>
+        <h2>Available APIs</h2>
         {/* API Tab start from here */}
 
         <div className="api-tabs">
@@ -149,7 +149,7 @@ function handleResetFilters() {
       </div>
       {console.log(selectedFilters)}
     </section>
-      <Codegenerator/>
+      <Codegenerator generatedUrl={generatedUrl}/>
       </>
   );
 }
