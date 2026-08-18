@@ -1,6 +1,7 @@
 import "./ApiExplorer.css";
 import ResponseViewer from "./ResponseViewer";
 import apiConfig from "../../data/apiConfig";
+import Codegenerator from "../CodeGenerator/CodeGenerator";
 import { useState } from "react";
 
 function ApiExplorer() {
@@ -75,6 +76,7 @@ function handleResetFilters() {
   );
 }
   return (
+    <>
     <section className="api-explorer">
       <div className="api-container">
         <h2>Availabel APIs</h2>
@@ -147,6 +149,8 @@ function handleResetFilters() {
       </div>
       {console.log(selectedFilters)}
     </section>
+      <Codegenerator/>
+      </>
   );
 }
 
