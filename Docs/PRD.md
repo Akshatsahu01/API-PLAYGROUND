@@ -58,14 +58,14 @@ Developers learning or integrating an API must discover endpoints, remember quer
 
 ## 6. User Stories and Acceptance Criteria
 
-| ID | User story | Acceptance criteria |
-|---|---|---|
-| US-01 | As a developer, I want to choose a resource so I can explore its data. | Doctors and Patients are selectable; the active endpoint and filters update. |
-| US-02 | As a developer, I want to choose filters so I can narrow results. | The selected resource shows its supported options and retains selected values until reset. |
-| US-03 | As a developer, I want to see the final URL so I can reuse it elsewhere. | The URL includes the endpoint and all non-empty, URL-encoded query parameters. |
-| US-04 | As a developer, I want to fetch data so I can inspect a real response. | The UI shows loading, then formatted JSON on success or a visible error on failure. |
-| US-05 | As a developer, I want generated code so I can start integration quickly. | Four language tabs render examples containing the current URL. |
-| US-06 | As a maintainer, I want layered backend code so I can add resources safely. | Routes, controllers, services, and models remain separate responsibilities. |
+| ID    | User story                                                                  | Acceptance criteria                                                                        |
+| ----- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| US-01 | As a developer, I want to choose a resource so I can explore its data.      | Doctors and Patients are selectable; the active endpoint and filters update.               |
+| US-02 | As a developer, I want to choose filters so I can narrow results.           | The selected resource shows its supported options and retains selected values until reset. |
+| US-03 | As a developer, I want to see the final URL so I can reuse it elsewhere.    | The URL includes the endpoint and all non-empty, URL-encoded query parameters.             |
+| US-04 | As a developer, I want to fetch data so I can inspect a real response.      | The UI shows loading, then formatted JSON on success or a visible error on failure.        |
+| US-05 | As a developer, I want generated code so I can start integration quickly.   | Four language tabs render examples containing the current URL.                             |
+| US-06 | As a maintainer, I want layered backend code so I can add resources safely. | Routes, controllers, services, and models remain separate responsibilities.                |
 
 ## 7. Functional Requirements
 
@@ -118,13 +118,13 @@ The repository does not currently include database migrations or a formal API sc
 
 ## 10. Risks and Mitigations
 
-| Risk | Impact | Mitigation |
-|---|---|---|
-| Frontend and backend filter definitions drift | Requests become invalid or surprising | Adopt a shared OpenAPI contract or generated metadata. |
-| Invalid values reach the model | Errors or incorrect results | Validate enums and numbers before querying. |
-| Large result sets overload the UI/database | Slow requests | Add limits, pagination, explicit fields, and indexes based on measurements. |
-| Demo data is mistaken for clinical data | Privacy and trust issues | Label data as synthetic and prohibit real PII. |
-| Inconsistent backend errors | Difficult client handling | Standardize status codes and error response bodies. |
+| Risk                                          | Impact                                | Mitigation                                                                  |
+| --------------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------- |
+| Frontend and backend filter definitions drift | Requests become invalid or surprising | Adopt a shared OpenAPI contract or generated metadata.                      |
+| Invalid values reach the model                | Errors or incorrect results           | Validate enums and numbers before querying.                                 |
+| Large result sets overload the UI/database    | Slow requests                         | Add limits, pagination, explicit fields, and indexes based on measurements. |
+| Demo data is mistaken for clinical data       | Privacy and trust issues              | Label data as synthetic and prohibit real PII.                              |
+| Inconsistent backend errors                   | Difficult client handling             | Standardize status codes and error response bodies.                         |
 
 ## 11. Future Roadmap
 
