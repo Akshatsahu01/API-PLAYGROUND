@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LanguageComponents from "./languageCodes";
 import "./CodeGenerator.css";
 
-function Codegenerator({generatedUrl}) {
+function Codegenerator({generatedUrl,selectedApi}) {
     const codeOptions = ["JavaScript", "Java", "Python", "CPP"];
 
     const [language, setLanguage] = useState("");
@@ -19,6 +19,9 @@ function Codegenerator({generatedUrl}) {
 
         return <Component generatedUrl={generatedUrl}/>;
     }
+    useEffect(()=>{
+        setLanguage("")
+    },[selectedApi])
 
     
        return (

@@ -149,7 +149,7 @@ function handleResetFilters() {
       </div>
       {console.log(selectedFilters)}
     </section>
-      <Codegenerator generatedUrl={generatedUrl}/>
+      <Codegenerator generatedUrl={generatedUrl} selectedApi={selectedApi}/>
       </>
   );
 }
