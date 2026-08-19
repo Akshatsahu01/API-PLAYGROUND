@@ -1,0 +1,191 @@
+/* ======================================================
+   Code Generator
+====================================================== */
+
+.code-generator {
+    width: calc(100% - 4rem);
+
+    margin: 0 2rem 2rem 2rem;
+    padding: 1.75rem;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+}
+
+
+/* ======================================================
+   Header
+====================================================== */
+
+.code-generator-header {
+    margin-bottom: 1.5rem;
+}
+
+.code-generator-header h2 {
+    margin: 0 0 0.5rem;
+
+    font-size: 1.6rem;
+    font-weight: 700;
+
+    color: #111;
+}
+
+.code-generator-header p {
+    margin: 0;
+
+    font-size: 0.95rem;
+    color: #777;
+
+    line-height: 1.4;
+}
+
+
+/* ======================================================
+   Language Tabs
+====================================================== */
+
+.language-tabs {
+    display: flex;
+    gap: 0.6rem;
+
+    margin-bottom: 1rem;
+    padding-bottom: 0.9rem;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.language-tabs button {
+    padding: 0.65rem 1.1rem;
+
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #333;
+
+    font-size: 0.95rem;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.language-tabs button:hover {
+    border-color: #111;
+}
+
+.language-tabs button.active-language {
+    background: #111;
+    color: #ffffff;
+
+    border-color: #111;
+}
+
+
+/* ======================================================
+   Code Container
+====================================================== */
+
+.code-container {
+    width: 100%;
+
+    overflow: hidden;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+
+    background: #fafafa;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================================
+   Generated Code
+====================================================== */
+
+.code-container pre {
+    margin: 0;
+
+    padding: 1.5rem;
+
+    min-height: 250px;
+
+    overflow-x: auto;
+
+    box-sizing: border-box;
+
+    background: #fafafa;
+
+    color: #222;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 0.9rem;
+    line-height: 1.6;
+
+    white-space: pre;
+}
+
+
+/* ======================================================
+   Code Scrollbar
+====================================================== */
+
+.code-container pre::-webkit-scrollbar {
+    height: 8px;
+}
+
+.code-container pre::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.code-container pre::-webkit-scrollbar-thumb {
+    background: #cccccc;
+
+    border-radius: 4px;
+}
+
+.code-container pre::-webkit-scrollbar-thumb:hover {
+    background: #999999;
+}
+
+
+/* ======================================================
+   Responsive
+====================================================== */
+
+@media (max-width: 700px) {
+
+    .code-generator {
+        width: calc(100% - 2rem);
+
+        margin: 0 1rem 1rem 1rem;
+
+        padding: 1.25rem;
+    }
+
+    .language-tabs {
+        flex-wrap: wrap;
+    }
+
+    .language-tabs button {
+        flex: 1;
+    }
+
+    .code-container pre {
+        padding: 1rem;
+
+        font-size: 0.8rem;
+    }
+}
