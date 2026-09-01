@@ -15,6 +15,9 @@ function Apimetadata(props) {
         <p>
           <strong>Body:</strong> None
         </p>
+        <p>
+            <strong>payloadSize: </strong>0 B
+        </p>
         
       </section>
 
@@ -34,6 +37,9 @@ function Apimetadata(props) {
         <p>
           <strong>Content Type:</strong>{" "}
           {apiMetadata.contentType}
+        </p>
+        <p><strong>PayloadSize</strong>{" "}
+        {apiMetadata.payloadSize} B
         </p>
       </section>
 

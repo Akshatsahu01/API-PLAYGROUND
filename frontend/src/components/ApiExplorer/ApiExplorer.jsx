@@ -31,6 +31,7 @@ function ApiExplorer() {
         statusText: response.statusText,
         responseTime: duration,
         contentType: response.headers.get("content-type"),
+         payloadSize:response.headers.get("content-length")
       });
       if (!response.ok) {
         setApiMetadata({
@@ -39,6 +40,7 @@ function ApiExplorer() {
           statusText: response.statusText,
           responseTime: duration,
           contentType: response.headers.get("content-type"),
+           payloadSize:response.headers.get("content-length")
         });
         throw new Error("Failed to fetch data");
       }
@@ -57,6 +59,7 @@ function ApiExplorer() {
         statusText: "Unable to reach server",
         responseTime: duration,
         contentType: "N/A",
+         payloadSize:"0 B"
       });
 
       setError(err.message);
@@ -175,7 +178,6 @@ function ApiExplorer() {
             </div>
           </div>
           {responseData && <Apimetadata metadata={apiMetadata} />}
-          {console.log(apiMetadata)}
           {/* Response Section */}
           <ResponseViewer data={responseData} loading={loading} error={error} />
         </div>
