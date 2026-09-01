@@ -1,4 +1,5 @@
 import "./ApiExplorer.css";
+import { useEffect } from "react";
 import ResponseViewer from "./ResponseViewer";
 import apiConfig from "../../data/apiConfig";
 import Codegenerator from "../CodeGenerator/CodeGenerator";
@@ -16,6 +17,7 @@ function ApiExplorer() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [apiMetadata, setApiMetadata] = useState({});
+  useEffect(()=>setResponseData(""),[currentApi])
   async function handleFetchData() {
     const startTime = Date.now();
     try {
