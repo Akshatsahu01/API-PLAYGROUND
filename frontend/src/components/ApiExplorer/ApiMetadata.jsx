@@ -38,8 +38,8 @@ function Apimetadata(props) {
           <strong>Content Type:</strong>{" "}
           {apiMetadata.contentType}
         </p>
-        <p><strong>PayloadSize</strong>{" "}
-        {apiMetadata.payloadSize} B
+        <p><strong>Response Size</strong>{" "}
+        {apiMetadata.responseSize} B
         </p>
       </section>
 
