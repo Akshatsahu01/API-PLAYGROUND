@@ -32,6 +32,36 @@ Doctors and Patients are exposed through the API explorer. Resource definitions 
 
 This contains resource labels, endpoint paths, and supported filter options.
 
+### 2.1.1 Configuration-Driven Resource Discovery
+
+Resource discovery is implemented using a centralized configuration model in:
+
+`frontend/src/data/apiConfig.js`
+
+Each resource definition contains:
+
+- Resource label
+- Endpoint path
+- Supported filters
+- Filter labels
+- Available filter options
+
+`ApiExplorer.jsx` reads the configuration for the currently selected resource and uses it to determine which filters are displayed and which endpoint is used to generate the request URL.
+
+For example:
+
+`Doctors → /doctors → specialization, availability, experience`
+
+`Patients → /patients → gender, age, doctorAssigned, amountToBePaid, sickness`
+
+This design avoids duplicating resource-specific configuration across multiple UI components.
+
+### Design Benefit
+
+Adding another read-only resource can follow the same configuration pattern instead of requiring the explorer UI to be rewritten for each resource.
+
+This improves resource discoverability, maintainability, and extensibility.
+
 ### 2.2 Reproducible API Requests
 
 Users select filters through UI controls. Selected values are URL-encoded and combined with the selected endpoint to create the request URL.
@@ -286,6 +316,30 @@ The patient model uses `doctor_id` when filtering by assigned doctor.
 
 The repository does not contain database migration files or a formal schema definition. Therefore, the database structure is treated as an environment assumption rather than something automatically created by the application.
 
+### 8.1 Filtered Data Retrieval Design
+
+Filtered retrieval follows the same layered architecture:
+
+`HTTP Query Parameters → Controller → Service → Model → PostgreSQL`
+
+For example, a request such as:
+
+`GET /api/doctors?specialization=Cardiologist&experience=5`
+
+is processed by the doctor resource handler.
+
+The model converts the selected filters into parameterized SQL conditions:
+
+`specialization = $1`
+
+`experience >= $2`
+
+The values are passed separately to PostgreSQL through the `pg` connection pool.
+
+Multiple selected filters are combined using `AND` conditions.
+
+This allows the same endpoint to support both unfiltered retrieval and progressively filtered resource discovery.
+
 ## 9. API Request and Data Flow
 
 ### Step 1 — Resource Selection
@@ -438,21 +492,29 @@ The application provides a root health route, but does not currently implement d
 
 **Benefit:** Navigation is separated from API request state and unknown routes have a defined fallback.
 
-### Decision 2 — Configuration-driven API filters
+### Decision 2 — Configuration-driven resource discovery and filters
 
-**PRD requirement:** Users should discover resources and supported filters.
+PRD requirement: Users should easily discover available API resources and their supported filters.
 
-**HLD decision:** Store resource and filter metadata in `apiConfig.js`.
+HLD decision: Store resource metadata, endpoint paths, labels, and filter definitions centrally in frontend/src/data/apiConfig.js.
 
-**Reason:** It reduces duplication and provides a central frontend configuration point.
+Implementation: ApiExplorer.jsx reads the selected resource configuration and uses its endpoint and filters to construct the request.
 
-### Decision 3 — Layered Express backend
+Reason: This avoids hard-coding resource-specific UI logic in multiple components.
 
-**PRD requirement:** Backend resources should be maintainable and extensible.
+Benefit: Adding another resource primarily requires adding its configuration rather than rewriting the entire explorer.
 
-**HLD decision:** Separate routes, controllers, services, and models.
+### Decision 3 — Layered backend data retrieval
 
-**Reason:** Each layer has a focused responsibility, reducing coupling between HTTP handling and database access.
+PRD requirement: Filtered resource data should be retrieved through a maintainable backend architecture.
+
+HLD decision: Separate HTTP routing, controller handling, service delegation, and database access.
+
+Implementation: /api/doctors routes through the doctor controller and service before reaching doctorModel.js.
+
+Reason: Controllers don't directly construct SQL queries.
+
+Benefit: Database logic remains isolated and additional resources can follow the same pattern..
 
 ### Decision 4 — Parameterized SQL
 
