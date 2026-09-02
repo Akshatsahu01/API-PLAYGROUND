@@ -1,0 +1,40 @@
+/* ======================================================
+   Simple Footer
+====================================================== */
+
+.footer {
+  width: 100%;
+  background: #ffffff;
+  border-top: 1px solid #e5e5e5;
+  margin-top: 1rem;
+}
+
+.footer-content {
+  width: 100%;
+  padding: 1.1rem 2rem;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-copyright,
+.footer-tech {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+/* ======================================================
+   Responsive
+====================================================== */
+
+@media (max-width: 600px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+}
