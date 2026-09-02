@@ -1,18 +1,35 @@
 /* ======================================================
-   API Explorer
+   API EXPLORER
+   Theme:
+   Primary:    #172554
+   Accent:     #0ea5a4
+   Accent Blue:#2d6ba3
+   Background: #f8fafc
+   Border:     #d1d9e3
+   Text:       #0f172a
+   Muted:      #64748b
 ====================================================== */
 
 .api-explorer {
     width: 100%;
     padding: 2rem;
+    background: #f8fafc;
+    box-sizing: border-box;
 }
 
 .api-container {
     width: 100%;
+
     background: #ffffff;
-    border: 1px solid #e5e5e5;
+
+    border: 1px solid #d1d9e3;
     border-radius: 12px;
+
     padding: 1.75rem;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 2px 8px rgba(23, 37, 84, 0.05);
 }
 
 /* ======================================================
@@ -22,7 +39,10 @@
 .api-container h2 {
     font-size: 1.6rem;
     font-weight: 700;
-    margin-bottom: 1.5rem;
+
+    color: #172554;
+
+    margin: 0 0 1.5rem;
 }
 
 /* ======================================================
@@ -31,29 +51,59 @@
 
 .api-tabs {
     display: flex;
+
     gap: 2rem;
-    border-bottom: 1px solid #e5e5e5;
-    padding-bottom: .75rem;
+
+    border-bottom: 1px solid #d1d9e3;
+
+    padding-bottom: 0.75rem;
     margin-bottom: 1.5rem;
 }
 
 .api-tabs button {
+    position: relative;
+
     background: transparent;
     border: none;
-    padding-bottom: .7rem;
+
+    padding: 0 0 0.7rem;
+
     font-size: 1rem;
-    color: #666;
+    font-weight: 500;
+
+    color: #64748b;
+
     cursor: pointer;
-    transition: .2s;
+
+    transition:
+        color 0.2s ease;
 }
 
 .api-tabs button:hover {
-    color: black;
+    color: #172554;
 }
 
+/* Active API */
+
 .active-tab {
-    color: black !important;
-    border-bottom: 2px solid black;
+    color: #172554 !important;
+    font-weight: 600 !important;
+}
+
+.active-tab::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: -0.75rem;
+
+    height: 2px;
+
+    background: #0ea5a4;
+
+    border-radius: 2px;
 }
 
 /* ======================================================
@@ -68,65 +118,91 @@
 
 .filter-header {
     display: flex;
+
     justify-content: space-between;
     align-items: center;
+
     margin-bottom: 1.2rem;
 }
 
 .filter-header h3 {
     font-size: 1.15rem;
     font-weight: 600;
+
+    color: #172554;
+
+    margin: 0;
 }
 
 .filter-buttons {
     display: flex;
-    gap: .75rem;
+
+    gap: 0.75rem;
 }
 
-/* ---------- Buttons ---------- */
+/* ======================================================
+   Buttons
+====================================================== */
 
 .reset-btn,
 .apply-btn {
-
     height: 42px;
 
     padding: 0 1.3rem;
 
     border-radius: 8px;
 
-    font-size: .95rem;
+    font-size: 0.95rem;
+    font-weight: 500;
 
     cursor: pointer;
 
-    transition: .2s;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+
+    box-sizing: border-box;
 }
 
+/* Reset */
+
 .reset-btn {
+    background: #ffffff;
 
-    background: white;
+    border: 1px solid #d1d9e3;
 
-    border: 1px solid #dcdcdc;
-
-    color: black;
+    color: #172554;
 }
 
 .reset-btn:hover {
+    background: #f8fafc;
 
-    background: #f4f4f4;
+    border-color: #94a3b8;
+
+    color: #172554;
 }
 
+/* Apply */
+
 .apply-btn {
+    background: #172554;
 
-    background: black;
+    border: 1px solid #172554;
 
-    border: none;
-
-    color: white;
+    color: #ffffff;
 }
 
 .apply-btn:hover {
+    background: #2d6ba3;
 
-    background: #222;
+    border-color: #2d6ba3;
+
+    box-shadow: 0 4px 12px rgba(23, 37, 84, 0.18);
+
+    transform: translateY(-1px);
 }
 
 /* ======================================================
@@ -134,7 +210,6 @@
 ====================================================== */
 
 .filter-grid {
-
     display: grid;
 
     grid-template-columns: repeat(3, 1fr);
@@ -143,46 +218,54 @@
 }
 
 .filter-item {
-
     display: flex;
 
     flex-direction: column;
 }
 
 .filter-item label {
+    margin-bottom: 0.45rem;
 
-    margin-bottom: .45rem;
-
-       font-size: 0.95rem;
+    font-size: 0.95rem;
     font-weight: 500;
+
     line-height: 1.4;
 
+    color: #172554;
 }
 
 .filter-item select {
-
     width: 100%;
 
     height: 42px;
 
-    padding: 0 .85rem;
+    padding: 0 0.85rem;
 
-    border: 1px solid #dcdcdc;
+    border: 1px solid #d1d9e3;
 
     border-radius: 8px;
 
-    background: white;
+    background: #ffffff;
 
-    font-size: .95rem;
+    color: #0f172a;
+
+    font-size: 0.95rem;
 
     outline: none;
 
-    transition: .2s;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.filter-item select:hover {
+    border-color: #94a3b8;
 }
 
 .filter-item select:focus {
+    border-color: #0ea5a4;
 
-    border-color: black;
+    box-shadow: 0 0 0 3px rgba(14, 165, 164, 0.1);
 }
 
 /* ======================================================
@@ -190,72 +273,90 @@
 ====================================================== */
 
 .url-section {
-
     margin-top: 1.75rem;
 }
 
 .url-section label {
-
     display: block;
 
-    margin-bottom: .6rem;
+    margin-bottom: 0.6rem;
 
+    font-size: 1rem;
     font-weight: 600;
+
+    color: #172554;
 }
 
 .url-row {
-
     display: flex;
 
-    gap: .75rem;
+    gap: 0.75rem;
 }
 
 .url-row input {
-
     flex: 1;
 
     height: 42px;
 
     padding: 0 1rem;
 
-    border: 1px solid #dcdcdc;
+    border: 1px solid #d1d9e3;
 
     border-radius: 8px;
 
-    background: #fafafa;
+    background: #f8fafc;
 
-    font-size: .95rem;
+    color: #0f172a;
+
+    font-size: 0.95rem;
+
+    box-sizing: border-box;
 }
 
 .url-row input:focus {
-
     outline: none;
 
-    border-color: black;
+    border-color: #0ea5a4;
+
+    background: #ffffff;
+
+    box-shadow: 0 0 0 3px rgba(14, 165, 164, 0.1);
 }
 
-.url-row button {
+/* Fetch Button */
 
+.url-row button {
     width: 150px;
 
     height: 42px;
 
-    border: none;
+    border: 1px solid #172554;
 
     border-radius: 8px;
 
-    background: black;
+    background: #172554;
 
-    color: white;
+    color: #ffffff;
+
+    font-size: 0.95rem;
+    font-weight: 500;
 
     cursor: pointer;
 
-    transition: .2s;
+    transition:
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
 }
 
 .url-row button:hover {
+    background: #2d6ba3;
 
-    background: #222;
+    border-color: #2d6ba3;
+
+    box-shadow: 0 4px 12px rgba(23, 37, 84, 0.18);
+
+    transform: translateY(-1px);
 }
 
 /* ======================================================
@@ -263,41 +364,39 @@
 ====================================================== */
 
 .response-viewer {
-
     margin-top: 1.75rem;
 }
 
 .response-title {
-
-    margin-bottom: .75rem;
+    margin-bottom: 0.75rem;
 
     font-size: 1.05rem;
-
     font-weight: 600;
+
+    color: #172554;
 }
 
 .response-container {
-
     min-height: 180px;
 
-    border: 1px dashed #d8d8d8;
+    border: 1px solid #d1d9e3;
 
     border-radius: 10px;
 
-    background: #fafafa;
+    background: #f8fafc;
 
     display: flex;
 
     justify-content: center;
-
     align-items: center;
+
+    box-sizing: border-box;
 }
 
 .response-placeholder {
+    color: #64748b;
 
-    color: #777;
-
-    font-size: .95rem;
+    font-size: 0.95rem;
 }
 
 /* ======================================================
@@ -307,26 +406,26 @@
 @media (max-width: 1000px) {
 
     .filter-grid {
-
         grid-template-columns: repeat(2, 1fr);
     }
 
 }
 
+/* ======================================================
+   Tablet / Mobile
+====================================================== */
+
 @media (max-width: 700px) {
 
     .api-explorer {
-
         padding: 1rem;
     }
 
     .api-container {
-
         padding: 1.25rem;
     }
 
     .filter-header {
-
         flex-direction: column;
 
         align-items: flex-start;
@@ -335,31 +434,66 @@
     }
 
     .filter-buttons {
-
         width: 100%;
 
         justify-content: flex-end;
     }
 
     .filter-grid {
-
         grid-template-columns: 1fr;
     }
 
     .url-row {
-
         flex-direction: column;
     }
 
     .url-row button {
-
         width: 100%;
     }
 
     .reset-btn,
     .apply-btn {
-
         flex: 1;
+    }
+}
+
+/* ======================================================
+   Small Mobile
+====================================================== */
+
+@media (max-width: 480px) {
+
+    .api-explorer {
+        padding: 0.75rem;
+    }
+
+    .api-container {
+        padding: 1rem;
+
+        border-radius: 10px;
+    }
+
+    .api-container h2 {
+        font-size: 1.4rem;
+    }
+
+    .api-tabs {
+        gap: 1.5rem;
+    }
+
+    .filter-buttons {
+        width: 100%;
+    }
+
+    .reset-btn,
+    .apply-btn {
+        padding: 0 0.9rem;
+
+        font-size: 0.85rem;
+    }
+
+    .url-row {
+        gap: 0.6rem;
     }
 
 }

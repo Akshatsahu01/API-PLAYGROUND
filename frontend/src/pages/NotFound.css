@@ -1,0 +1,314 @@
+/* =========================================================
+   NOT FOUND PAGE STYLES
+   Color Palette:
+   Primary:   #172554 (Marino)
+   Accent:    #0ea5a4 (Venice Blue)
+   Border:    #d1d9e3 (Rock Blur)
+   Background: #f8fafc
+   Text:      #0f172a
+   Muted:     #64748b
+   ========================================================= */
+
+.not-found-container {
+  width: 100%;
+  min-height: calc(100vh - 200px);
+  background: linear-gradient(135deg, #f8fafc 0%, #f0f4ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+}
+
+.not-found-content {
+  text-align: center;
+  max-width: 600px;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   ERROR CODE
+   ========================================================= */
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #172554 0%, #0ea5a4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -5px;
+  text-shadow: 0 4px 20px rgba(23, 37, 84, 0.1);
+}
+
+/* =========================================================
+   ERROR TITLE & DESCRIPTION
+   ========================================================= */
+
+.error-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #172554;
+  margin: 0 0 1rem 0;
+  letter-spacing: -1px;
+}
+
+.error-description {
+  font-size: 1.05rem;
+  color: #64748b;
+  line-height: 1.8;
+  margin: 0 0 2rem 0;
+}
+
+/* =========================================================
+   ERROR ICON/ILLUSTRATION
+   ========================================================= */
+
+.error-icon {
+  margin: 2.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.icon-svg {
+  width: 150px;
+  height: 150px;
+  filter: drop-shadow(0 4px 20px rgba(14, 165, 164, 0.15));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* =========================================================
+   SUGGESTIONS
+   ========================================================= */
+
+.suggestions {
+  background: #ffffff;
+  border: 2px solid #d1d9e3;
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+  text-align: left;
+}
+
+.suggestions p {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #172554;
+  margin: 0 0 1.25rem 0;
+  text-align: center;
+}
+
+.suggestions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.suggestions-list li {
+  font-size: 0.95rem;
+  color: #475569;
+  padding-left: 1.75rem;
+  position: relative;
+  line-height: 1.6;
+}
+
+.suggestions-list li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #0ea5a4;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin: 2.5rem 0;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.95rem 2rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #172554 0%, #2d6ba3 100%);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(23, 37, 84, 0.25);
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: #172554;
+  border: 2px solid #172554;
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(23, 37, 84, 0.15);
+}
+
+/* =========================================================
+   SEARCH SUGGESTION
+   ========================================================= */
+
+.search-suggestion {
+  background: linear-gradient(135deg, rgba(14, 165, 164, 0.1) 0%, rgba(23, 37, 84, 0.05) 100%);
+  border-left: 4px solid #0ea5a4;
+  padding: 1.25rem 1.5rem;
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+.search-suggestion p {
+  font-size: 0.95rem;
+  color: #172554;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.suggestion-icon {
+  font-size: 1.5rem;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .not-found-container {
+    min-height: calc(100vh - 150px);
+    padding: 2rem 1.5rem;
+  }
+
+  .error-code {
+    font-size: 6rem;
+    letter-spacing: -3px;
+  }
+
+  .error-title {
+    font-size: 2rem;
+  }
+
+  .error-description {
+    font-size: 1rem;
+  }
+
+  .icon-svg {
+    width: 120px;
+    height: 120px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .not-found-container {
+    min-height: calc(100vh - 120px);
+    padding: 1.5rem 1rem;
+  }
+
+  .error-code {
+    font-size: 4.5rem;
+    letter-spacing: -2px;
+    margin-bottom: 0.5rem;
+  }
+
+  .error-title {
+    font-size: 1.6rem;
+  }
+
+  .error-description {
+    font-size: 0.9rem;
+  }
+
+  .icon-svg {
+    width: 100px;
+    height: 100px;
+  }
+
+  .suggestions {
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .suggestions p {
+    font-size: 0.95rem;
+  }
+
+  .suggestions-list li {
+    font-size: 0.85rem;
+  }
+
+  .btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .search-suggestion {
+    padding: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .search-suggestion p {
+    font-size: 0.85rem;
+  }
+
+  .suggestion-icon {
+    font-size: 1.2rem;
+  }
+}
