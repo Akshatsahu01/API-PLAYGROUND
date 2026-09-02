@@ -7,10 +7,10 @@ import ApiExplorer from "../components/ApiExplorer/ApiExplorer";
 function Home() {
   return (
     <>
-      <Navbar />
+      
        <Hero />
       { <ApiExplorer />}
-      {/* {<CodeGenerator /> } */}
+     
       {/* <Footer />  */}
     </>
   );
