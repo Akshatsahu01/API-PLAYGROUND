@@ -20,6 +20,15 @@ function Navbar() {
           </NavLink>
 
           <NavLink
+            to="/explore"
+            className={({ isActive }) =>
+              isActive ? "active-link" : "nav-link"
+            }
+          >
+            Explore APIs
+          </NavLink>
+
+          <NavLink
             to="/about"
             className={({ isActive }) =>
               isActive ? "active-link" : "nav-link"

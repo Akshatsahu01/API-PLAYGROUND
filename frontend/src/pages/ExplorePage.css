@@ -1,0 +1,420 @@
+/* ======================================================
+   EXPLORE PAGE
+   Theme (matches existing project):
+   Primary:    #172554
+   Accent:     #0ea5a4
+   Accent Blue:#2d6ba3
+   Background: #f8fafc
+   Border:     #d1d9e3
+   Text:       #0f172a
+   Muted:      #64748b
+====================================================== */
+
+/* ── Page wrapper ──────────────────────────────────── */
+
+.explore-page {
+    width: 100%;
+    min-height: 70vh;
+    padding: 2.5rem 2rem;
+    background: #f8fafc;
+    box-sizing: border-box;
+}
+
+/* ── Page header ───────────────────────────────────── */
+
+.explore-header {
+    max-width: 760px;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+}
+
+.explore-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #172554;
+    margin: 0 0 0.75rem;
+}
+
+.explore-subtitle {
+    font-size: 1.05rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ── Layout ────────────────────────────────────────── */
+
+.explore-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* When a detail panel is open, go side-by-side */
+.explore-layout--split {
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.explore-layout--split .api-grid {
+    flex: 0 0 420px;
+    min-width: 300px;
+}
+
+.detail-panel-wrapper {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ── API Card Grid ─────────────────────────────────── */
+
+.api-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+}
+
+/* ── API Card ──────────────────────────────────────── */
+
+.api-card {
+    background: #ffffff;
+    border: 1px solid #d1d9e3;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    box-shadow: 0 2px 8px rgba(23, 37, 84, 0.05);
+    transition:
+        box-shadow 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+    cursor: default;
+}
+
+.api-card:hover {
+    box-shadow: 0 6px 20px rgba(23, 37, 84, 0.1);
+    transform: translateY(-2px);
+    border-color: #94a3b8;
+}
+
+.api-card--selected {
+    border-color: #0ea5a4;
+    box-shadow: 0 0 0 3px rgba(14, 165, 164, 0.15),
+                0 6px 20px rgba(23, 37, 84, 0.1);
+}
+
+.api-card__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.api-card__name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #172554;
+    margin: 0;
+    flex: 1;
+}
+
+.api-card__short-desc {
+    font-size: 0.92rem;
+    color: #475569;
+    line-height: 1.55;
+    margin: 0;
+}
+
+.api-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.api-tag {
+    font-size: 0.78rem;
+    color: #64748b;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 0.15rem 0.55rem;
+}
+
+.api-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: auto;
+    flex-wrap: wrap;
+}
+
+.api-card__base-url {
+    font-size: 0.8rem;
+    color: #0ea5a4;
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.api-card__base-url:hover {
+    text-decoration: underline;
+}
+
+/* ── Category Badge ────────────────────────────────── */
+
+.category-badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.2rem 0.65rem;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+/* ── View Details Button ───────────────────────────── */
+
+.view-details-btn {
+    height: 36px;
+    padding: 0 1rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid #172554;
+    background: #172554;
+    color: #ffffff;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.15s ease;
+    white-space: nowrap;
+}
+
+.view-details-btn:hover {
+    background: #2d6ba3;
+    border-color: #2d6ba3;
+    box-shadow: 0 4px 12px rgba(23, 37, 84, 0.18);
+    transform: translateY(-1px);
+}
+
+.view-details-btn--active {
+    background: #0ea5a4;
+    border-color: #0ea5a4;
+}
+
+.view-details-btn--active:hover {
+    background: #0d9392;
+    border-color: #0d9392;
+}
+
+/* ── Detail Panel ──────────────────────────────────── */
+
+.detail-panel {
+    background: #ffffff;
+    border: 1px solid #d1d9e3;
+    border-radius: 12px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 16px rgba(23, 37, 84, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+.detail-panel__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.detail-panel__title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #172554;
+    margin: 0 0 0.5rem;
+}
+
+.detail-panel__close {
+    background: transparent;
+    border: 1px solid #d1d9e3;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.detail-panel__close:hover {
+    background: #f1f5f9;
+    color: #172554;
+}
+
+.detail-panel__description {
+    font-size: 0.95rem;
+    color: #475569;
+    line-height: 1.65;
+    margin: 0;
+}
+
+.detail-panel__meta {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+}
+
+.detail-meta-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.detail-meta-url {
+    font-size: 0.9rem;
+    color: #0ea5a4;
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.detail-meta-url:hover {
+    text-decoration: underline;
+}
+
+.detail-panel__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+/* ── Detail Sections (code blocks) ────────────────── */
+
+.detail-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.detail-section__title {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: #172554;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.detail-section__icon {
+    font-size: 1rem;
+}
+
+.detail-code {
+    background: #0f172a;
+    color: #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    font-size: 0.82rem;
+    font-family: "Fira Code", "Cascadia Code", "Consolas", monospace;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 0;
+}
+
+.detail-code--json {
+    color: #7dd3fc;
+}
+
+.detail-code--js {
+    color: #86efac;
+}
+
+/* ── Loading / Error States ────────────────────────── */
+
+.explore-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem;
+    color: #64748b;
+    font-size: 1rem;
+}
+
+.explore-state--error {
+    color: #be123c;
+}
+
+/* Spinner */
+.spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid #e2e8f0;
+    border-top-color: #0ea5a4;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Responsive ────────────────────────────────────── */
+
+@media (max-width: 900px) {
+    .explore-layout--split {
+        flex-direction: column;
+    }
+
+    .explore-layout--split .api-grid {
+        flex: unset;
+        width: 100%;
+    }
+
+    .detail-panel {
+        position: static;
+        max-height: unset;
+    }
+}
+
+@media (max-width: 600px) {
+    .explore-page {
+        padding: 1.5rem 1rem;
+    }
+
+    .explore-title {
+        font-size: 1.6rem;
+    }
+
+    .api-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .api-card__footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .view-details-btn {
+        width: 100%;
+    }
+}
+
