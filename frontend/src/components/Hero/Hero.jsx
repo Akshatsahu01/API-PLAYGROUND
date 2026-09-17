@@ -18,10 +18,9 @@ function Hero() {
           </div>
 
           <div className="hero-action">
-            <a href="#api-explorer" className="hero-btn">
-            <Link to="/explore" className="hero-btn"/>
+            <Link to="/explore" className="hero-btn">
               Explore APIs →
-            </a>
+            </Link>
             
           </div>
 
