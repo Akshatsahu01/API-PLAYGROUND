@@ -169,6 +169,45 @@
     padding: 0.2rem 0.65rem;
     border-radius: 20px;
     white-space: nowrap;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+.category-badge[data-category="E-commerce"] {
+    background: #fff7ed;
+    color: #c2410c;
+    border-color: #fed7aa;
+}
+
+.category-badge[data-category="General"] {
+    background: #f0fdf4;
+    color: #15803d;
+    border-color: #bbf7d0;
+}
+
+.category-badge[data-category="Auth/Users"] {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-color: #bfdbfe;
+}
+
+.category-badge[data-category="Users"] {
+    background: #faf5ff;
+    color: #7e22ce;
+    border-color: #e9d5ff;
+}
+
+.category-badge[data-category="Books"] {
+    background: #fff1f2;
+    color: #be123c;
+    border-color: #fecdd3;
+}
+
+.category-badge[data-category="Social"] {
+    background: #f0f9ff;
+    color: #0369a1;
+    border-color: #bae6fd;
 }
 
 /* ── View Details Button ───────────────────────────── */
@@ -418,3 +457,69 @@
     }
 }
 
+
+.method-badge {
+  display: inline-block;
+  min-width: 52px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.method-badge--get {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.method-badge--post {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.endpoint-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.endpoint-item {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.endpoint-item__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.endpoint-item__header code {
+  overflow-wrap: anywhere;
+}
+
+.endpoint-item p {
+  margin: 8px 0 0;
+  color: #64748b;
+}
+
+.explore-layout--split .api-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.view-details-btn:focus-visible,
+.detail-panel__close:focus-visible,
+.api-card__base-url:focus-visible,
+.detail-meta-url:focus-visible {
+  outline: 3px solid #0ea5a4;
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .explore-layout--split .api-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  }
+}

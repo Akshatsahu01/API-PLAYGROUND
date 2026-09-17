@@ -1,28 +1,84 @@
-import { useEffect, useState } from "react";
-import "./ExplorePage.css";
+import { useState } from "react";
 
-// Category → color mapping
-const CATEGORY_COLORS = {
-  "E-commerce": { bg: "#fff7ed", text: "#c2410c", border: "#fed7aa" },
-  General:      { bg: "#f0fdf4", text: "#15803d", border: "#bbf7d0" },
-  "Auth/Users": { bg: "#eff6ff", text: "#1d4ed8", border: "#bfdbfe" },
-  Users:        { bg: "#faf5ff", text: "#7e22ce", border: "#e9d5ff" },
-  Books:        { bg: "#fff1f2", text: "#be123c", border: "#fecdd3" },
-  Social:       { bg: "#f0f9ff", text: "#0369a1", border: "#bae6fd" },
-};
+import "./ExplorePage.css";
+import fakeApis from "../data/fakeApis.js";
+
+function apiUrl(baseUrl) {
+  if (!baseUrl?.startsWith("/")) {
+    return baseUrl;
+  }
+
+  const backendUrl = (
+    import.meta.env.VITE_API_URL || window.location.origin
+  ).replace(/\/$/, "");
+
+  return `${backendUrl}${baseUrl}`;
+}
 
 function CategoryBadge({ category }) {
-  const style = CATEGORY_COLORS[category] || {
-    bg: "#f1f5f9", text: "#475569", border: "#cbd5e1",
-  };
   return (
-    <span
-      className="category-badge"
-      style={{ background: style.bg, color: style.text, border: `1px solid ${style.border}` }}
-    >
+    <span className="category-badge" data-category={category}>
       {category}
     </span>
   );
+}
+
+function MethodBadge({ method }) {
+  return (
+    <span className={`method-badge method-badge--${method.toLowerCase()}`}>
+      {method}
+    </span>
+  );
+}
+
+function getRequestBody(apiId) {
+  if (apiId === "products") {
+    return {
+      title: "Laptop",
+      price: 55000,
+      category: "electronics"
+    };
+  }
+
+  if (apiId === "books") {
+    return {
+      title: "The Hobbit",
+      author: "J. R. R. Tolkien",
+      genre: "Fantasy"
+    };
+  }
+
+  if (apiId === "posts") {
+    return {
+      userId: 1,
+      title: "My sample post",
+      body: "This is a sample post for testing the API."
+    };
+  }
+
+  return {};
+}
+
+function createUsageSnippet(endpoint, apiId) {
+  const url = apiUrl(endpoint.path.replace(":id", "1"));
+
+  if (endpoint.method === "GET") {
+    return `fetch("${url}")
+  .then((response) => response.json())
+  .then((data) => console.log(data));`;
+  }
+
+  const body = getRequestBody(apiId);
+
+  return `fetch("${url}", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(${JSON.stringify(body, null, 2)})
+})
+  .then((response) => response.json())
+  .then((data) => console.log(data));`;
 }
 
 function ApiCard({ api, onViewDetails, isSelected }) {
@@ -32,23 +88,31 @@ function ApiCard({ api, onViewDetails, isSelected }) {
         <h3 className="api-card__name">{api.name}</h3>
         <CategoryBadge category={api.category} />
       </div>
+
       <p className="api-card__short-desc">{api.short_desc}</p>
+
       <div className="api-card__tags">
-        {api.tags && api.tags.map((tag) => (
-          <span key={tag} className="api-tag">#{tag}</span>
+        {api.tags?.map((tag) => (
+          <span key={tag} className="api-tag">
+            #{tag}
+          </span>
         ))}
       </div>
+
       <div className="api-card__footer">
         <a
-          href={api.base_url}
+          href={apiUrl(api.base_url)}
           target="_blank"
           rel="noopener noreferrer"
           className="api-card__base-url"
         >
-          {api.base_url}
+          {apiUrl(api.base_url)}
         </a>
+
         <button
-          className={`view-details-btn ${isSelected ? "view-details-btn--active" : ""}`}
+          className={`view-details-btn ${
+            isSelected ? "view-details-btn--active" : ""
+          }`}
           onClick={() => onViewDetails(api.id)}
         >
           {isSelected ? "Hide Details" : "View Details"}
@@ -59,7 +123,9 @@ function ApiCard({ api, onViewDetails, isSelected }) {
 }
 
 function DetailPanel({ detail, onClose }) {
-  if (!detail) return null;
+  if (!detail) {
+    return null;
+  }
 
   return (
     <div className="detail-panel">
@@ -68,158 +134,140 @@ function DetailPanel({ detail, onClose }) {
           <h2 className="detail-panel__title">{detail.name}</h2>
           <CategoryBadge category={detail.category} />
         </div>
-        <button className="detail-panel__close" onClick={onClose} aria-label="Close">
+
+        <button
+          className="detail-panel__close"
+          onClick={onClose}
+          aria-label="Close details"
+        >
           ✕
         </button>
       </div>
 
-      <p className="detail-panel__description">{detail.description}</p>
+      <p className="detail-panel__description">
+        {detail.description}
+      </p>
 
       <div className="detail-panel__meta">
         <span className="detail-meta-label">Base URL</span>
-        <a href={detail.base_url} target="_blank" rel="noopener noreferrer" className="detail-meta-url">
-          {detail.base_url}
+
+        <a
+          href={apiUrl(detail.base_url)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="detail-meta-url"
+        >
+          {apiUrl(detail.base_url)}
         </a>
-        {detail.docs_url && (
-          <>
-            <span className="detail-meta-label">Documentation</span>
-            <a href={detail.docs_url} target="_blank" rel="noopener noreferrer" className="detail-meta-url">
-              {detail.docs_url}
-            </a>
-          </>
-        )}
       </div>
 
       <div className="detail-panel__tags">
-        {detail.tags && detail.tags.map((tag) => (
-          <span key={tag} className="api-tag">#{tag}</span>
+        {detail.tags?.map((tag) => (
+          <span key={tag} className="api-tag">
+            #{tag}
+          </span>
         ))}
       </div>
 
       <div className="detail-section">
         <h4 className="detail-section__title">
-          <span className="detail-section__icon">📦</span> Sample Response
+          <span className="detail-section__icon">🔗</span>
+          Available Endpoints
         </h4>
+
+        <div className="endpoint-list">
+          {detail.endpoints.map((endpoint) => (
+            <div className="endpoint-item" key={`${endpoint.method}-${endpoint.path}`}>
+              <div className="endpoint-item__header">
+                <MethodBadge method={endpoint.method} />
+                <code>{apiUrl(endpoint.path)}</code>
+              </div>
+
+              <p>{endpoint.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="detail-section">
+        <h4 className="detail-section__title">
+          <span className="detail-section__icon">📦</span>
+          Sample Response
+        </h4>
+
         <pre className="detail-code detail-code--json">
           {JSON.stringify(detail.sample_response, null, 2)}
         </pre>
       </div>
 
-      <div className="detail-section">
-        <h4 className="detail-section__title">
-          <span className="detail-section__icon">💻</span> How to Use (fetch)
-        </h4>
-        <pre className="detail-code detail-code--js">{detail.usage_snippet}</pre>
-      </div>
+      {detail.endpoints.map((endpoint) => (
+        <div
+          className="detail-section"
+          key={`usage-${endpoint.method}-${endpoint.path}`}
+        >
+          <h4 className="detail-section__title">
+            <span className="detail-section__icon">💻</span>
+            {endpoint.method} Request Example
+          </h4>
+
+          <pre className="detail-code detail-code--js">
+            {createUsageSnippet(endpoint, detail.id)}
+          </pre>
+        </div>
+      ))}
     </div>
   );
 }
 
 function ExplorePage() {
-  const [apis, setApis] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
-  const [detail, setDetail] = useState(null);
-  const [detailLoading, setDetailLoading] = useState(false);
 
-  // Fetch the catalogue list on mount
-  useEffect(() => {
-    async function fetchApis() {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/fake-apis`);
-        if (!res.ok) throw new Error("Failed to load API catalogue");
-        const data = await res.json();
-        setApis(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchApis();
-  }, []);
+  const selectedApi = fakeApis.find((api) => api.id === selectedId);
 
-  // Fetch detail for selected API
-  async function handleViewDetails(id) {
-    // Toggle off if same card clicked again
-    if (selectedId === id) {
-      setSelectedId(null);
-      setDetail(null);
-      return;
-    }
-    setSelectedId(id);
-    setDetail(null);
-    setDetailLoading(true);
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/fake-apis/${id}`);
-      if (!res.ok) throw new Error("Failed to load API details");
-      const data = await res.json();
-      setDetail(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setDetailLoading(false);
-    }
+  function handleViewDetails(id) {
+    setSelectedId((currentId) => (currentId === id ? null : id));
   }
 
   function handleCloseDetail() {
     setSelectedId(null);
-    setDetail(null);
   }
 
   return (
     <section className="explore-page">
       <div className="explore-header">
-        <h1 className="explore-title">Explore Public Fake APIs</h1>
+        <h1 className="explore-title">Explore Playground APIs</h1>
+
         <p className="explore-subtitle">
-          Browse popular free &amp; fake REST APIs used by developers to practice
-          API integration, prototyping, and frontend development.
+          Explore sample REST APIs hosted by this playground for practice and
+          prototyping.
         </p>
       </div>
 
-      {loading && (
-        <div className="explore-state">
-          <div className="spinner" />
-          <p>Loading APIs…</p>
+      <div
+        className={`explore-layout ${
+          selectedId ? "explore-layout--split" : ""
+        }`}
+      >
+        <div className="api-grid">
+          {fakeApis.map((api) => (
+            <ApiCard
+              key={api.id}
+              api={api}
+              isSelected={selectedId === api.id}
+              onViewDetails={handleViewDetails}
+            />
+          ))}
         </div>
-      )}
 
-      {error && !loading && (
-        <div className="explore-state explore-state--error">
-          <p>⚠️ {error}</p>
-        </div>
-      )}
-
-      {!loading && !error && (
-        <div className={`explore-layout ${selectedId ? "explore-layout--split" : ""}`}>
-          {/* Card grid */}
-          <div className="api-grid">
-            {apis.map((api) => (
-              <ApiCard
-                key={api.id}
-                api={api}
-                isSelected={selectedId === api.id}
-                onViewDetails={handleViewDetails}
-              />
-            ))}
+        {selectedId && (
+          <div className="detail-panel-wrapper">
+            <DetailPanel
+              detail={selectedApi}
+              onClose={handleCloseDetail}
+            />
           </div>
-
-          {/* Detail panel */}
-          {selectedId && (
-            <div className="detail-panel-wrapper">
-              {detailLoading ? (
-                <div className="explore-state">
-                  <div className="spinner" />
-                  <p>Loading details…</p>
-                </div>
-              ) : (
-                <DetailPanel detail={detail} onClose={handleCloseDetail} />
-              )}
-            </div>
-          )}
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }
