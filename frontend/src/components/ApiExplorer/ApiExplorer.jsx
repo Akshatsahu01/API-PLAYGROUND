@@ -8,6 +8,7 @@ import Apimetadata from "./ApiMetadata";
 function ApiExplorer() {
   const apiSwitchVersion = useRef(0);
   const [selectedApi, setSelectedApi] = useState("doctors");
+  const [codeGeneratorVersion, setCodeGeneratorVersion] = useState(0);
   const currentApi = apiConfig[selectedApi];
   const [selectedFilters, setSelectedFilters] = useState({});
   const [generatedUrl, setGeneratedUrl] = useState(
@@ -357,6 +358,26 @@ setLoading(false);
       `${import.meta.env.VITE_API_URL}/api${currentApi.endpoint}`,
     );
   }
+
+  function handleRefreshExplorer() {
+    const initialUrl = `${import.meta.env.VITE_API_URL}/api${apiConfig.doctors.endpoint}`;
+    apiSwitchVersion.current += 1;
+    setSelectedApi("doctors");
+    setSelectedFilters({});
+    setGeneratedUrl(initialUrl);
+    setFullUrl(initialUrl);
+    setSelectedMethod("fetch");
+    setRequestBody("");
+    setResponseData(null);
+    setFetchedData(null);
+    setHasFetched(false);
+    setLoading(false);
+    setError("");
+    setApiMetadata({});
+    setDeletedres(false);
+    setDeletedData(undefined);
+    setCodeGeneratorVersion((version) => version + 1);
+  }
   return (
     <>
       <section className="api-explorer">
@@ -365,23 +386,34 @@ setLoading(false);
           {/* API Tab start from here */}
 
           <div className="api-tabs">
-            {Object.keys(apiConfig).map((api) => (
-              <button
-                key={api}
-                className={selectedApi === api ? "active-tab" : ""}
-                onClick={() => {
-                  if (api !== selectedApi) apiSwitchVersion.current += 1;
-                  setSelectedApi(api);
-                  setSelectedFilters({});
-                  setGeneratedUrl(
-                    `${import.meta.env.VITE_API_URL}/api${apiConfig[api].endpoint}`,
-                  );
-                  setFullUrl(`${import.meta.env.VITE_API_URL}/api${apiConfig[api].endpoint}`)
-                }}
-              >
-                {apiConfig[api].label}
-              </button>
-            ))}
+            <div className="api-tab-buttons">
+              {Object.keys(apiConfig).map((api) => (
+                <button
+                  key={api}
+                  className={selectedApi === api ? "active-tab" : ""}
+                  onClick={() => {
+                    if (api !== selectedApi) apiSwitchVersion.current += 1;
+                    setSelectedApi(api);
+                    setSelectedFilters({});
+                    setGeneratedUrl(
+                      `${import.meta.env.VITE_API_URL}/api${apiConfig[api].endpoint}`,
+                    );
+                    setFullUrl(`${import.meta.env.VITE_API_URL}/api${apiConfig[api].endpoint}`)
+                  }}
+                >
+                  {apiConfig[api].label}
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              className="explorer-refresh-btn"
+              onClick={handleRefreshExplorer}
+              aria-label="Refresh API Explorer and clear its current state"
+              title="Clear the current API Explorer state"
+            >
+              Refresh
+            </button>
           </div>
           <div className="filter-panel">
             <div className="filter-header">
@@ -513,6 +545,7 @@ setLoading(false);
         {console.log(selectedFilters)}
       </section>
       <Codegenerator
+        key={codeGeneratorVersion}
         generatedUrl={generatedUrl}
         selectedApi={selectedApi}
         selectedMethod={selectedMethod}
