@@ -6,8 +6,8 @@
 
 .hero-container {
   width: 100%;
-  max-width: 1500px;
-  margin-inline: auto;
+  max-width: none;
+  margin: 0;
   padding: 1.8rem clamp(1rem, 2vw, 2rem);
 }
 
@@ -15,16 +15,17 @@
 
 .hero-content {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  gap: clamp(2rem, 6vw, 5rem);
+  gap: 2rem;
 }
 
 
 
 .hero-text {
-  flex: 0 1 720px;
+  flex: 1 1 720px;
   max-width: 720px;
+  text-align: left;
 }
 
 .hero-action {
@@ -79,5 +80,9 @@
 
   .hero-text {
     flex-basis: auto;
+  }
+
+  .hero-action {
+    align-self: flex-end;
   }
 }
