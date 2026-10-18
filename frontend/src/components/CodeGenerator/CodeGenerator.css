@@ -137,6 +137,12 @@
     white-space: pre;
 }
 
+.code-generator-message {
+    margin: 0;
+    padding: 1.5rem;
+    color: #64748b;
+}
+
 
 /* ======================================================
    Code Scrollbar
