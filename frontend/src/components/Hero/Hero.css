@@ -5,25 +5,30 @@
 }
 
 .hero-container {
+  width: 100%;
   max-width: 1500px;
-  margin: 0;
-  padding: 1.8rem 2rem;
+  margin-inline: auto;
+  padding: 1.8rem clamp(1rem, 2vw, 2rem);
 }
 
 
 
 .hero-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  gap: 3rem;
+  gap: clamp(2rem, 6vw, 5rem);
 }
 
 
 
 .hero-text {
-  flex: 1;
+  flex: 0 1 720px;
   max-width: 720px;
+}
+
+.hero-action {
+  flex: 0 0 auto;
 }
 
 .hero-text h1 {
@@ -63,4 +68,16 @@
 
 .hero-btn:hover {
   background: #333;
+}
+
+@media (max-width: 700px) {
+  .hero-content {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .hero-text {
+    flex-basis: auto;
+  }
 }

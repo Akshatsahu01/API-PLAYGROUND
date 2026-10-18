@@ -393,6 +393,81 @@
     transform: translateY(-1px);
 }
 
+.request-body-panel {
+    margin-top: 1.25rem;
+    padding: 1.25rem;
+    border: 1px solid #d1d9e3;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.request-body-panel > label {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: #172554;
+    font-weight: 600;
+}
+
+.request-body-panel p {
+    margin: 0 0 0.75rem;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.request-body-panel textarea {
+    display: block;
+    width: 100%;
+    min-height: 180px;
+    padding: 0.85rem;
+    border: 1px solid #d1d9e3;
+    border-radius: 8px;
+    background: #fff;
+    color: #0f172a;
+    font: 0.9rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.request-body-panel textarea:focus {
+    outline: none;
+    border-color: #0ea5a4;
+    box-shadow: 0 0 0 3px rgba(14, 165, 164, 0.1);
+}
+
+.request-body-example-button {
+    margin-top: 0.75rem;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid #d1d9e3;
+    border-radius: 7px;
+    background: #fff;
+    color: #172554;
+    font: inherit;
+    cursor: pointer;
+}
+
+.request-body-example-button:hover {
+    border-color: #0ea5a4;
+    color: #0f766e;
+}
+
+.request-body-panel details {
+    margin-top: 0.75rem;
+    color: #172554;
+}
+
+.request-body-panel summary {
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.request-body-panel pre {
+    overflow-x: auto;
+    padding: 0.85rem;
+    border-radius: 6px;
+    background: #fff;
+    color: #0f172a;
+}
+
 /* ======================================================
    Response Viewer
 ====================================================== */

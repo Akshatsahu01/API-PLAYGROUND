@@ -13,10 +13,10 @@ function Apimetadata(props) {
           <strong>Method:</strong> {apiMetadata.method}
         </p>
         <p>
-          <strong>Body:</strong> None
+          <strong>Body:</strong> {apiMetadata.requestSize ? "JSON" : "None"}
         </p>
         <p>
-            <strong>payloadSize: </strong>0 B
+            <strong>payloadSize: </strong>{apiMetadata.requestSize ?? 0} B
         </p>
         
       </section>
