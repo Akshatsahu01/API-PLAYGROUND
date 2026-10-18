@@ -1,11 +1,12 @@
 import "./ApiExplorer.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ResponseViewer from "./ResponseViewer";
 import apiConfig from "../../data/apiConfig";
 import Codegenerator from "../CodeGenerator/CodeGenerator";
 import Apimetadata from "./ApiMetadata";
 
 function ApiExplorer() {
+  const apiSwitchVersion = useRef(0);
   const [selectedApi, setSelectedApi] = useState("doctors");
   const currentApi = apiConfig[selectedApi];
   const [selectedFilters, setSelectedFilters] = useState({});
@@ -14,6 +15,7 @@ function ApiExplorer() {
   );
   const [fullUrl,setFullUrl]=useState( `${import.meta.env.VITE_API_URL}/api${currentApi.endpoint}`)
   const [selectedMethod, setSelectedMethod] = useState("fetch");
+  const [requestBody, setRequestBody] = useState("");
   const [responseData, setResponseData] = useState(null);
   const [fetchedData, setFetchedData] = useState(null);
   const [hasFetched, setHasFetched] = useState(false);
@@ -26,6 +28,14 @@ function ApiExplorer() {
     setResponseData(null);
     setFetchedData(null);
     setHasFetched(false);
+    setSelectedFilters({});
+    setSelectedMethod("fetch");
+    setRequestBody("");
+    setLoading(false);
+    setError("");
+    setApiMetadata({});
+    setDeletedres(false);
+    setDeletedData(undefined);
   }, [currentApi]);
 
   async function fetchData(url = fullUrl) {
@@ -211,6 +221,103 @@ setLoading(false);
  }
   }
 
+  function getUpdateExample() {
+    const sampleRecord = Array.isArray(fetchedData) ? fetchedData[0] : null;
+    if (!sampleRecord) return '{\n  "id": 1\n}';
+    return JSON.stringify(sampleRecord, null, 2);
+  }
+
+  async function handleUpdate() {
+    if (!hasFetched || !Array.isArray(fetchedData)) {
+      setError("Fetch the collection first, then submit the update.");
+      return;
+    }
+    const data = fetchedData;
+
+    let body;
+    try {
+      body = JSON.parse(requestBody);
+    } catch {
+      setError("Invalid JSON body. Check the JSON format and try again.");
+      return;
+    }
+    if (!body || Array.isArray(body) || typeof body !== "object") {
+      setError("Request body must be a JSON object.");
+      return;
+    }
+    if (body.id === undefined || body.id === null) {
+      setError('Request body must include the target record "id".');
+      return;
+    }
+
+    const target = data.find((record) => String(record.id) === String(body.id));
+    if (!target) {
+      setError(`No ${currentApi.label.toLowerCase()} record found with id ${body.id}.`);
+      return;
+    }
+    const recordFields = Object.keys(target);
+    const unknownFields = Object.keys(body).filter((key) => !recordFields.includes(key));
+    if (unknownFields.length) {
+      setError(`Unknown field${unknownFields.length > 1 ? "s" : ""}: ${unknownFields.join(", ")}.`);
+      return;
+    }
+    const changedFields = Object.keys(body).filter((key) => key !== "id");
+    if (!changedFields.length) {
+      setError("Add at least one field to update besides id.");
+      return;
+    }
+    if (selectedMethod === "put") {
+      const missingFields = recordFields.filter((key) => key !== "id" && !(key in body));
+      if (missingFields.length) {
+        setError(`PUT requires every field. Missing: ${missingFields.join(", ")}.`);
+        return;
+      }
+    }
+    const invalidTypes = changedFields.filter((key) => {
+      const currentValue = target[key];
+      const nextValue = body[key];
+      if (nextValue === null || currentValue === null) return false;
+      if (Array.isArray(currentValue)) return !Array.isArray(nextValue);
+      return typeof nextValue !== typeof currentValue;
+    });
+    if (invalidTypes.length) {
+      setError(`Value type must match the example for: ${invalidTypes.join(", ")}.`);
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    const currentApiSwitchVersion = apiSwitchVersion.current;
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    try {
+      if (currentApiSwitchVersion !== apiSwitchVersion.current) return;
+      const updatedRecord = selectedMethod === "put"
+        ? { ...body, id: target.id }
+        : { ...target, ...body, id: target.id };
+      const updatedData = data.map((record) =>
+        String(record.id) === String(body.id) ? updatedRecord : record,
+      );
+      setFetchedData(updatedData);
+      setResponseData({
+        message: `${currentApi.label.slice(0, -1)} updated successfully.`,
+        method: selectedMethod.toUpperCase(),
+        data: updatedRecord,
+      });
+      setApiMetadata({
+        method: selectedMethod.toUpperCase(),
+        status: 200,
+        statusText: "OK (simulated)",
+        responseTime: Math.floor(Math.random() * 24) + 3,
+        contentType: "application/json; charset=utf-8",
+        responseSize: new TextEncoder().encode(JSON.stringify(updatedRecord)).length,
+        requestSize: new TextEncoder().encode(requestBody).length,
+      });
+      setDeletedres(false);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   function handleFilterChange(event) {
     const { id, value } = event.target;
 
@@ -261,6 +368,7 @@ setLoading(false);
                 key={api}
                 className={selectedApi === api ? "active-tab" : ""}
                 onClick={() => {
+                  if (api !== selectedApi) apiSwitchVersion.current += 1;
                   setSelectedApi(api);
                   setSelectedFilters({});
                   setGeneratedUrl(
@@ -327,15 +435,59 @@ setLoading(false);
               >
                 <option value="fetch">FETCH</option>
                 <option value="delete">DELETE</option>
+                <option value="put">PUT</option>
+                <option value="patch">PATCH</option>
               </select>
               <input type="text" value={generatedUrl} readOnly />
               <button onClick={
-                selectedMethod === "fetch" ? handleFetchData : handleDelete
+                selectedMethod === "fetch" ? handleFetchData
+                  : selectedMethod === "delete" ? handleDelete
+                    : handleUpdate
               }>
-                {selectedMethod === "fetch" ? "fetch data" : "delete data"}
+                {selectedMethod === "fetch" ? "fetch data" : `${selectedMethod} data`}
               </button>
             </div>
           </div>
+          {(selectedMethod === "put" || selectedMethod === "patch") && (
+            <div className="request-body-panel">
+              <label htmlFor="request-body">JSON request body</label>
+              <p>
+                Include the record <code>id</code> and fields shown in the API response.
+                {selectedMethod === "put"
+                  ? " PUT requires every field (full replacement)."
+                  : " PATCH accepts only fields you want to change."}
+                {" "}Fetch the collection first to see a complete example.
+              </p>
+              <textarea
+                id="request-body"
+                value={requestBody}
+                onChange={(event) => {
+                  setRequestBody(event.target.value);
+                  setError("");
+                }}
+                placeholder={getUpdateExample()}
+                rows={10}
+                spellCheck="false"
+                aria-describedby="request-body-example"
+              />
+              {Array.isArray(fetchedData) && fetchedData.length > 0 && (
+                <button
+                  className="request-body-example-button"
+                  type="button"
+                  onClick={() => {
+                    setRequestBody(getUpdateExample());
+                    setError("");
+                  }}
+                >
+                  Fill with example body
+                </button>
+              )}
+              <details id="request-body-example">
+                <summary>Show body format example</summary>
+                <pre>{getUpdateExample()}</pre>
+              </details>
+            </div>
+          )}
           {responseData  && <Apimetadata metadata={apiMetadata} />}
           
           {/* Response Section */}
