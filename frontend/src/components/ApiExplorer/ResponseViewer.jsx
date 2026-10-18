@@ -1,6 +1,6 @@
 import "./ResponseViewer.css"
 
-function ResponseViewer({data,loading,error}){
+function ResponseViewer({ data, loading, error }) {
  if (loading) {
     return (
       <div className="response-viewer">
@@ -32,9 +32,7 @@ function ResponseViewer({data,loading,error}){
     <div className="response-viewer">
       <h3>Response</h3>
 
-      <pre>
-        {JSON.stringify(data, null, 2)}
-      </pre>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 }

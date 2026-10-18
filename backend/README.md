@@ -40,6 +40,29 @@ This folder contains the Node.js and Express backend for the API Playground proj
 - `npm run dev` - start the server with nodemon
 - `npm start` - start the server in production mode
 
+## Seeded Explore APIs
+
+Run [`sql/seed_explore_apis.sql`](sql/seed_explore_apis.sql) against the PostgreSQL
+database configured in your `.env` file:
+
+```bash
+psql -h your_host -U your_user -d your_database -f sql/seed_explore_apis.sql
+```
+
+The script creates three sample data tables, inserts four records into each,
+and adds three cards to the existing `fake_apis` catalog. It preserves existing
+rows and can be run again without duplicating these sample records or cards.
+
+| Endpoint | Optional filter | Single record |
+| --- | --- | --- |
+| `GET /api/products` | `?category=Home` | `GET /api/products/1` |
+| `GET /api/books` | `?genre=Science%20Fiction` | `GET /api/books/1` |
+| `GET /api/posts` | `?user_id=1` | `GET /api/posts/1` |
+
+List routes return JSON arrays. Single record routes return a JSON object, or
+404 when the ID does not exist. Invalid IDs and invalid filters return 400.
+The catalog routes remain `GET /api/fake-apis` and `GET /api/fake-apis/:id`.
+
 ## Project Structure
 
 - `src/app.js` - application setup
