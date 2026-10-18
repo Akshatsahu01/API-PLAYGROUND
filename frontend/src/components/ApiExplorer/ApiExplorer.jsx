@@ -238,7 +238,9 @@ setLoading(false);
     try {
       body = JSON.parse(requestBody);
     } catch {
-      setError("Invalid JSON body. Check the JSON format and try again.");
+      setError(
+        "Invalid JSON body. Check the quotes and braces, and remove any comma after the last property.",
+      );
       return;
     }
     if (!body || Array.isArray(body) || typeof body !== "object") {
@@ -464,6 +466,8 @@ setLoading(false);
                 onChange={(event) => {
                   setRequestBody(event.target.value);
                   setError("");
+                  setResponseData(null);
+                  setApiMetadata({});
                 }}
                 placeholder={getUpdateExample()}
                 rows={10}
@@ -508,7 +512,12 @@ setLoading(false);
         </div>
         {console.log(selectedFilters)}
       </section>
-      <Codegenerator generatedUrl={generatedUrl} selectedApi={selectedApi} />
+      <Codegenerator
+        generatedUrl={generatedUrl}
+        selectedApi={selectedApi}
+        selectedMethod={selectedMethod}
+        requestBody={requestBody}
+      />
     </>
   );
 }

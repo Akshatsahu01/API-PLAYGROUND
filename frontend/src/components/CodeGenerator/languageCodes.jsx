@@ -1,31 +1,39 @@
-function JavaScript(props) {
+function getBodyJson(requestBody) {
+    return JSON.stringify(requestBody, null, 2);
+}
+
+function JavaScript({ generatedUrl, method, requestBody }) {
+    const bodyOptions = requestBody === undefined
+        ? ""
+        : `\n        headers: { "Content-Type": "application/json" },\n        body: JSON.stringify(${getBodyJson(requestBody).replace(/\n/g, "\n        ")})`;
+
     return (
-        <div>
-            <pre>
-{`async function getData() {
+        <pre>{`async function sendRequest() {
     try {
-        const response = await fetch("${props.generatedUrl}");
+        const response = await fetch(${JSON.stringify(generatedUrl)}, {
+            method: ${JSON.stringify(method)},${bodyOptions}
+        });
 
         const data = await response.json();
-
         console.log(data);
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Request failed:", error);
     }
 }
 
-getData();`}
-            </pre>
-        </div>
+sendRequest();`}</pre>
     );
 }
 
+function Java({ generatedUrl, method, requestBody }) {
+    const requestBuilder = method === "GET"
+        ? ".GET()"
+        : method === "DELETE"
+            ? ".DELETE()"
+            : `.header("Content-Type", "application/json")\n                    .method("${method}", HttpRequest.BodyPublishers.ofString(${JSON.stringify(JSON.stringify(requestBody))}))`;
 
-function Java(props) {
     return (
-        <div>
-            <pre>
-{`import java.net.URI;
+        <pre>{`import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -33,87 +41,82 @@ import java.net.http.HttpResponse;
 public class Main {
     public static void main(String[] args) {
         try {
-            String url = "${props.generatedUrl}";
-
-            HttpClient client = HttpClient.newHttpClient();
-
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .GET()
+                    .uri(URI.create(${JSON.stringify(generatedUrl)}))
+                    ${requestBuilder}
                     .build();
 
-            HttpResponse<String> response =
-                    client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpClient client = HttpClient.newHttpClient();
+            HttpResponse<String> response = client.send(
+                    request, HttpResponse.BodyHandlers.ofString());
 
             System.out.println(response.body());
-
         } catch (Exception error) {
             error.printStackTrace();
         }
     }
-}`}
-            </pre>
-        </div>
+}`}</pre>
     );
 }
 
+function Python({ generatedUrl, method, requestBody }) {
+    const bodyArgument = requestBody === undefined
+        ? ""
+        : `,\n    json=json.loads(${JSON.stringify(JSON.stringify(requestBody))})`;
 
-function Python(props) {
     return (
-        <div>
-            <pre>
-{`import requests
+        <pre>{`import json
+import requests
 
-url = "${props.generatedUrl}"
+url = ${JSON.stringify(generatedUrl)}
+response = requests.request(
+    ${JSON.stringify(method)},
+    url${bodyArgument}
+)
 
-response = requests.get(url)
-
-data = response.json()
-
-print(data)`}
-            </pre>
-        </div>
+print(response.status_code)
+print(response.json())`}</pre>
     );
 }
 
+function Cpp({ generatedUrl, method, requestBody }) {
+    const bodySetup = requestBody === undefined
+        ? ""
+        : `\n        const char* body = ${JSON.stringify(JSON.stringify(requestBody))};\n        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);\n        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body);`;
+    const headerSetup = requestBody === undefined
+        ? ""
+        : "\n        struct curl_slist* headers = nullptr;\n        headers = curl_slist_append(headers, \"Content-Type: application/json\");";
+    const cleanup = requestBody === undefined
+        ? ""
+        : "\n        curl_slist_free_all(headers);";
 
-function Cpp(props) {
     return (
-        <div>
-            <pre>
-{`#include <iostream>
+        <pre>{`#include <iostream>
 #include <curl/curl.h>
 
 int main() {
-    CURL* curl;
+    CURL* curl = curl_easy_init();
+    if (!curl) return 1;
 
-    curl = curl_easy_init();
+    curl_easy_setopt(curl, CURLOPT_URL, ${JSON.stringify(generatedUrl)});
+    curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, ${JSON.stringify(method)});${headerSetup}${bodySetup}
 
-    if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, "${props.generatedUrl}");
-
-        CURLcode result = curl_easy_perform(curl);
-
-        if (result != CURLE_OK) {
-            std::cout << "Request failed" << std::endl;
-        }
-
-        curl_easy_cleanup(curl);
+    CURLcode result = curl_easy_perform(curl);
+    if (result != CURLE_OK) {
+        std::cerr << "Request failed: " << curl_easy_strerror(result) << std::endl;
     }
-
-    return 0;
-}`}
-            </pre>
-        </div>
+${cleanup}
+    curl_easy_cleanup(curl);
+    return result == CURLE_OK ? 0 : 1;
+}`}</pre>
     );
 }
 
-
 const LanguageComponents = {
-    JavaScript: JavaScript,
-    Java: Java,
-    Python: Python,
-    CPP: Cpp
+    JavaScript,
+    Java,
+    Python,
+    CPP: Cpp,
 };
 
 export default LanguageComponents;
