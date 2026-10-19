@@ -63,6 +63,16 @@ List routes return JSON arrays. Single record routes return a JSON object, or
 404 when the ID does not exist. Invalid IDs and invalid filters return 400.
 The catalog routes remain `GET /api/fake-apis` and `GET /api/fake-apis/:id`.
 
+## Doctor and patient mutation examples
+
+`DELETE`, `PUT`, and `PATCH` are available on `/api/doctors` and
+`/api/patients` as validation-only examples. DELETE uses supported URL query
+filters and does not accept a body. PUT and PATCH require a JSON object with a
+positive integer `id`; PATCH also requires at least one valid field, while PUT
+requires every field for that resource. Invalid inputs receive `400 Bad
+Request`. Valid requests receive `200 OK` with `dataChanged: false`. These
+handlers do not call a service or modify PostgreSQL.
+
 ## Project Structure
 
 - `src/app.js` - application setup

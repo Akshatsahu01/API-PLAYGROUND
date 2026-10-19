@@ -56,8 +56,10 @@ function Codegenerator({ generatedUrl, selectedApi, selectedMethod, requestBody 
             <h2>Code Generator</h2>
             <p>
                 Choose a language to generate code for the selected method and URL.
+                {selectedMethod === "delete" &&
+                    " DELETE uses the selected URL filters, needs no body, and does not change database records."}
                 {(selectedMethod === "put" || selectedMethod === "patch") &&
-                    " These are standard HTTP examples; the playground's PUT/PATCH simulation stays in the browser."}
+                    " PUT and PATCH validate the request body and do not change database records."}
             </p>
         </div>
 
