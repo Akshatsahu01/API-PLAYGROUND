@@ -229,6 +229,8 @@ setLoading(false);
   }
 
   async function handleUpdate() {
+    if (selectedMethod !== "put" && selectedMethod !== "patch") return;
+
     if (!hasFetched || !Array.isArray(fetchedData)) {
       setError("Fetch the collection first, then submit the update.");
       return;
@@ -336,6 +338,15 @@ setLoading(false);
       };
     });
   }
+
+  function handleMethodChange(event) {
+    setSelectedMethod(event.target.value);
+    setError("");
+    setResponseData(null);
+    setApiMetadata({});
+    setDeletedres(false);
+    setDeletedData(undefined);
+  }
   function handleApplyFilters() {
     const queryParams = Object.entries(selectedFilters)
       .filter(([key, value]) => value !== "")
@@ -366,7 +377,7 @@ setLoading(false);
     setSelectedFilters({});
     setGeneratedUrl(initialUrl);
     setFullUrl(initialUrl);
-    setSelectedMethod("fetch");
+    setSelectedMethod("get");
     setRequestBody("");
     setResponseData(null);
     setFetchedData(null);
@@ -464,7 +475,7 @@ setLoading(false);
               <select
                 className="method-select"
                 value={selectedMethod}
-                onChange={(event) => setSelectedMethod(event.target.value)}
+                onChange={handleMethodChange}
                 aria-label="Select request method"
               >
                 <option value="get">GET</option>
