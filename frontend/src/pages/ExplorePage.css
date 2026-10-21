@@ -478,6 +478,16 @@
   color: #15803d;
 }
 
+.method-badge--patch {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.method-badge--delete {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
 .endpoint-list {
   display: flex;
   flex-direction: column;
@@ -508,6 +518,54 @@
 
 .explore-layout--split .api-grid {
   grid-template-columns: minmax(0, 1fr);
+}
+
+/* Keep the selected API preview on the left while browsing APIs on the right. */
+.explore-layout--split {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
+  align-items: start;
+  gap: 1.25rem;
+}
+
+.explore-layout--split .api-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.detail-panel-wrapper {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.explore-layout--split .detail-panel {
+  position: sticky;
+  top: 1.5rem;
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
+}
+
+.explore-layout--split .api-grid {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+@media (max-width: 900px) {
+  .explore-layout--split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .explore-layout--split .detail-panel-wrapper,
+  .explore-layout--split .api-grid {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .explore-layout--split .detail-panel {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
 }
 
 .view-details-btn:focus-visible,
