@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import "./ExplorePage.css";
 import fakeApis from "../data/fakeApis.js";
@@ -56,7 +56,7 @@ function getRequestBody(apiId) {
     };
   }
 
-  return {};
+  return fakeApis.find((api) => api.id === apiId)?.request_example ?? {};
 }
 
 function createUsageSnippet(endpoint, apiId) {
@@ -71,7 +71,7 @@ function createUsageSnippet(endpoint, apiId) {
   const body = getRequestBody(apiId);
 
   return `fetch("${url}", {
-  method: "POST",
+  method: "${endpoint.method}",
   headers: {
     "Content-Type": "application/json"
   },
@@ -100,14 +100,18 @@ function ApiCard({ api, onViewDetails, isSelected }) {
       </div>
 
       <div className="api-card__footer">
-        <a
-          href={apiUrl(api.base_url)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="api-card__base-url"
-        >
-          {apiUrl(api.base_url)}
-        </a>
+        {api.preview ? (
+          <code className="api-card__base-url">{api.base_url} · preview</code>
+        ) : (
+          <a
+            href={apiUrl(api.base_url)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="api-card__base-url"
+          >
+            {apiUrl(api.base_url)}
+          </a>
+        )}
 
         <button
           className={`view-details-btn ${
@@ -151,14 +155,18 @@ function DetailPanel({ detail, onClose }) {
       <div className="detail-panel__meta">
         <span className="detail-meta-label">Base URL</span>
 
-        <a
-          href={apiUrl(detail.base_url)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="detail-meta-url"
-        >
-          {apiUrl(detail.base_url)}
-        </a>
+        {detail.preview ? (
+          <code className="detail-meta-url">{detail.base_url} · frontend preview</code>
+        ) : (
+          <a
+            href={apiUrl(detail.base_url)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="detail-meta-url"
+          >
+            {apiUrl(detail.base_url)}
+          </a>
+        )}
       </div>
 
       <div className="detail-panel__tags">
@@ -221,8 +229,18 @@ function DetailPanel({ detail, onClose }) {
 
 function ExplorePage() {
   const [selectedId, setSelectedId] = useState(null);
+  const layoutRef = useRef(null);
 
   const selectedApi = fakeApis.find((api) => api.id === selectedId);
+  const displayedApis = selectedId
+    ? [selectedApi, ...fakeApis.filter((api) => api.id !== selectedId)]
+    : fakeApis;
+
+  useEffect(() => {
+    if (selectedId) {
+      layoutRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [selectedId]);
 
   function handleViewDetails(id) {
     setSelectedId((currentId) => (currentId === id ? null : id));
@@ -239,17 +257,24 @@ function ExplorePage() {
 
         <p className="explore-subtitle">
           Explore sample REST APIs hosted by this playground for practice and
-          prototyping.
+          prototyping. New API previews include example routes and responses.
         </p>
       </div>
 
       <div
+        ref={layoutRef}
         className={`explore-layout ${
           selectedId ? "explore-layout--split" : ""
         }`}
       >
+        {selectedId && (
+          <div className="detail-panel-wrapper">
+            <DetailPanel detail={selectedApi} onClose={handleCloseDetail} />
+          </div>
+        )}
+
         <div className="api-grid">
-          {fakeApis.map((api) => (
+          {displayedApis.map((api) => (
             <ApiCard
               key={api.id}
               api={api}
@@ -258,15 +283,6 @@ function ExplorePage() {
             />
           ))}
         </div>
-
-        {selectedId && (
-          <div className="detail-panel-wrapper">
-            <DetailPanel
-              detail={selectedApi}
-              onClose={handleCloseDetail}
-            />
-          </div>
-        )}
       </div>
     </section>
   );
