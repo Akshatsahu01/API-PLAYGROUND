@@ -39,6 +39,7 @@ This folder contains the Node.js and Express backend for the API Playground proj
 
 - `npm run dev` - start the server with nodemon
 - `npm start` - start the server in production mode
+- `npm run seed:generate` - regenerate the 47-API SQL seed and mutation schemas from the frontend catalog
 
 ## Seeded Explore APIs
 
@@ -62,6 +63,50 @@ rows and can be run again without duplicating these sample records or cards.
 List routes return JSON arrays. Single record routes return a JSON object, or
 404 when the ID does not exist. Invalid IDs and invalid filters return 400.
 The catalog routes remain `GET /api/fake-apis` and `GET /api/fake-apis/:id`.
+
+## The 47 practice APIs
+
+Generate and load their sample records with:
+
+```bash
+npm run seed:generate
+psql -h your_host -U your_user -d your_database -f sql/seed_practice_apis.sql
+```
+
+The seed creates 47 separate tables and inserts 10 sample records (IDs 1-10)
+into each table. A table name is `playground_` plus the API ID, with hyphens
+replaced by underscores (for example, `bus-routes` uses
+`playground_bus_routes`). The API IDs are `students`, `courses`, `exams`, `grades`, `library`,
+`employees`, `companies`, `teams`, `jobs`, `applications`, `comments`, `users`,
+`followers`, `notifications`, `chats`, `expenses`, `cart`, `orders`, `invoices`,
+`coupons`, `flights`, `hotels`, `destinations`, `bus-routes`, `properties`,
+`recipes`, `workouts`, `habits`, `sleep-records`, `moods`, `movies`, `music`,
+`games`, `news`, `podcasts`, `todos`, `snippets`, `servers`, `webhooks`,
+`errors`, `countries`, `space`, `weather-records`, `statistics`, `locations`,
+`auth`, and `request-tests`. Re-running the SQL upserts the sample rows without
+duplicating them. The seed data is generated from each frontend sample response
+and expanded into 10 distinguishable records. The generator also creates the
+backend table and field maps used by GET handlers and mutation validation.
+
+Each collection supports `GET /api/:apiId` and `GET /api/:apiId/:id`. Collection
+GET supports exact-match filters on table columns, `search`, `sort`, `order`,
+`limit`, and `offset`. For example:
+`GET /api/students?enrollment_status=active&limit=20`.
+GET requests read from PostgreSQL. `POST /api/:apiId`, `PUT /api/:apiId/:id`,
+`PATCH /api/:apiId/:id`, and `DELETE /api/:apiId/:id` are simulated and never
+write to PostgreSQL. Mutation bodies must be JSON objects with fields and value
+types from that API's sample record; an optional body `id` must match the URL
+ID. PUT requires every sample field, while PATCH needs at least one valid field.
+DELETE accepts an empty body or validates fields if a body is supplied.
+Mutations recognize seeded IDs 1-10; other well-formed IDs return 404.
+Invalid IDs or bodies return 400. Successful simulated writes return 200 with
+`dataChanged: false` and a message identifying the simulated operation.
+
+The extra examples also work: `GET /api/errors/:status` returns the selected
+sample HTTP error; `POST /api/auth/register` and `/api/auth/login` simulate
+authentication; `GET /api/chats/:id/messages` and
+`GET /api/webhooks/:id/deliveries` read their sample parent record from
+PostgreSQL. Chat message POST requests are simulated.
 
 ## Doctor and patient mutation examples
 

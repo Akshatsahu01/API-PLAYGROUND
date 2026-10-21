@@ -9,7 +9,8 @@
   },
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "seed:generate": "node scripts/generate_practice_api_seed.js"
   },
   "keywords": [],
   "author": "",

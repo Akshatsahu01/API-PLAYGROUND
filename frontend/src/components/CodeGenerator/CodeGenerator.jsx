@@ -24,7 +24,7 @@ function Codegenerator({ generatedUrl, selectedApi, selectedMethod, requestBody 
             return 
         }
         const Component = LanguageComponents[language];
-        const method = selectedMethod === "fetch" ? "GET" : selectedMethod.toUpperCase();
+        const method = selectedMethod.toUpperCase();
         let parsedBody;
 
         if (method === "PUT" || method === "PATCH") {

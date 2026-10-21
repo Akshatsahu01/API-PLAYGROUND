@@ -15,7 +15,7 @@ function ApiExplorer() {
     `${import.meta.env.VITE_API_URL}/api${currentApi.endpoint}`,
   );
   const [fullUrl,setFullUrl]=useState( `${import.meta.env.VITE_API_URL}/api${currentApi.endpoint}`)
-  const [selectedMethod, setSelectedMethod] = useState("fetch");
+  const [selectedMethod, setSelectedMethod] = useState("get");
   const [requestBody, setRequestBody] = useState("");
   const [responseData, setResponseData] = useState(null);
   const [fetchedData, setFetchedData] = useState(null);
@@ -30,7 +30,7 @@ function ApiExplorer() {
     setFetchedData(null);
     setHasFetched(false);
     setSelectedFilters({});
-    setSelectedMethod("fetch");
+    setSelectedMethod("get");
     setRequestBody("");
     setLoading(false);
     setError("");
@@ -467,18 +467,18 @@ setLoading(false);
                 onChange={(event) => setSelectedMethod(event.target.value)}
                 aria-label="Select request method"
               >
-                <option value="fetch">FETCH</option>
+                <option value="get">GET</option>
                 <option value="delete">DELETE</option>
                 <option value="put">PUT</option>
                 <option value="patch">PATCH</option>
               </select>
               <input type="text" value={generatedUrl} readOnly />
               <button onClick={
-                selectedMethod === "fetch" ? handleFetchData
+                selectedMethod === "get" ? handleFetchData
                   : selectedMethod === "delete" ? handleDelete
                     : handleUpdate
               }>
-                {selectedMethod === "fetch" ? "fetch data" : `${selectedMethod} data`}
+                {selectedMethod === "get" ? "fetch data" : `${selectedMethod} data`}
               </button>
             </div>
           </div>
