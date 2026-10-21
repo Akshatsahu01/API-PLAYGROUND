@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "seed:generate": "node scripts/generate_practice_api_seed.js"
+    "seed:generate": "node scripts/generate_practice_api_seed.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "pg": "^8.22.0"
   },
   "devDependencies": {
+    "jest": "^30.5.2",
     "nodemon": "^3.1.14"
   }
 }
