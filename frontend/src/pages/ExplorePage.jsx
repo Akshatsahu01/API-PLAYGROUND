@@ -31,7 +31,7 @@ function MethodBadge({ method }) {
   );
 }
 
-function getRequestBody(apiId) {
+function getRequestBody(apiId, endpoint) {
   if (apiId === "products") {
     return {
       title: "Laptop",
@@ -56,11 +56,19 @@ function getRequestBody(apiId) {
     };
   }
 
+  if (apiId === "auth" && endpoint.path.endsWith("/login")) {
+    return { username: "demo_student", password: "sample-password" };
+  }
+
+  if (apiId === "chats" && endpoint.path.endsWith("/messages")) {
+    return { sender_id: 1, message: "Hello from the API playground" };
+  }
+
   return fakeApis.find((api) => api.id === apiId)?.request_example ?? {};
 }
 
 function createUsageSnippet(endpoint, apiId) {
-  const url = apiUrl(endpoint.path.replace(":id", "1"));
+  const url = apiUrl(endpoint.path.replace(":id", "1").replace(":status", "404"));
 
   if (endpoint.method === "GET") {
     return `fetch("${url}")
@@ -68,7 +76,7 @@ function createUsageSnippet(endpoint, apiId) {
   .then((data) => console.log(data));`;
   }
 
-  const body = getRequestBody(apiId);
+  const body = getRequestBody(apiId, endpoint);
 
   return `fetch("${url}", {
   method: "${endpoint.method}",
@@ -100,18 +108,14 @@ function ApiCard({ api, onViewDetails, isSelected }) {
       </div>
 
       <div className="api-card__footer">
-        {api.preview ? (
-          <code className="api-card__base-url">{api.base_url} · preview</code>
-        ) : (
-          <a
-            href={apiUrl(api.base_url)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="api-card__base-url"
-          >
-            {apiUrl(api.base_url)}
-          </a>
-        )}
+        <a
+          href={apiUrl(api.base_url)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="api-card__base-url"
+        >
+          {apiUrl(api.base_url)}
+        </a>
 
         <button
           className={`view-details-btn ${
@@ -155,18 +159,14 @@ function DetailPanel({ detail, onClose }) {
       <div className="detail-panel__meta">
         <span className="detail-meta-label">Base URL</span>
 
-        {detail.preview ? (
-          <code className="detail-meta-url">{detail.base_url} · frontend preview</code>
-        ) : (
-          <a
-            href={apiUrl(detail.base_url)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="detail-meta-url"
-          >
-            {apiUrl(detail.base_url)}
-          </a>
-        )}
+        <a
+          href={apiUrl(detail.base_url)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="detail-meta-url"
+        >
+          {apiUrl(detail.base_url)}
+        </a>
       </div>
 
       <div className="detail-panel__tags">
@@ -257,7 +257,7 @@ function ExplorePage() {
 
         <p className="explore-subtitle">
           Explore sample REST APIs hosted by this playground for practice and
-          prototyping. New API previews include example routes and responses.
+          prototyping. GET reads sample records from PostgreSQL; write requests are validated simulations.
         </p>
       </div>
 

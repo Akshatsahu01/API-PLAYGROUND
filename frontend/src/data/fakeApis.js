@@ -126,10 +126,10 @@ const existingApis = [
 // Frontend catalog entries for the 47 practice APIs. These are examples for
 // the explorer UI; the routes will become live when their backend is added.
 const practiceApis = [
-  ["students", "Students", "Education", "Manage student profiles, courses, semesters, and enrollment status.", { id: 1, name: "Ava Patel", email: "ava.patel@example.com", course_id: 101, semester: 3, enrollment_status: "active" }],
-  ["courses", "Courses", "Education", "Store course titles, descriptions, credits, prerequisites, and instructors.", { id: 101, title: "Introduction to Computer Science", description: "Programming fundamentals and problem solving.", credits: 4, prerequisites: [], instructor: "Dr. Maya Shah" }],
-  ["exams", "Exams", "Education", "Create exams with schedules, subjects, total marks, and statuses.", { id: 1, course_id: 101, subject: "Programming Fundamentals", scheduled_at: "2026-11-12T09:00:00Z", total_marks: 100, status: "scheduled" }],
-  ["grades", "Grades", "Education", "Manage marks, grades, CGPA, and results linked to students and courses.", { id: 1, student_id: 1, course_id: 101, marks: 88, grade: "A", cgpa: 3.8, result: "passed" }],
+  ["students", "Students", "Education", "Manage student profiles, courses, semesters, and enrollment status.", { id: 1, name: "Ava Patel", email: "ava.patel@example.com", course_id: 1, semester: 3, enrollment_status: "active" }],
+  ["courses", "Courses", "Education", "Store course titles, descriptions, credits, prerequisites, and instructors.", { id: 1, title: "Introduction to Computer Science", description: "Programming fundamentals and problem solving.", credits: 4, prerequisites: [], instructor: "Dr. Maya Shah" }],
+  ["exams", "Exams", "Education", "Create exams with schedules, subjects, total marks, and statuses.", { id: 1, course_id: 1, subject: "Programming Fundamentals", scheduled_at: "2026-11-12T09:00:00Z", total_marks: 100, status: "scheduled" }],
+  ["grades", "Grades", "Education", "Manage marks, grades, CGPA, and results linked to students and courses.", { id: 1, student_id: 1, course_id: 1, marks: 88, grade: "A", cgpa: 3.8, result: "passed" }],
   ["library", "Library", "Education", "Search library resources, check availability, borrow books, and record returns.", { id: 1, title: "Clean Code", type: "book", author: "Robert C. Martin", available: true, due_date: null }],
   ["employees", "Employees", "People", "Employee profiles, departments, job titles, and joining dates.", { id: 1, name: "Jordan Lee", email: "jordan.lee@example.com", department: "Engineering", job_title: "Frontend Developer", joined_at: "2024-06-17" }],
   ["companies", "Companies", "People", "Company details, websites, industries, sizes, and locations.", { id: 1, name: "Northstar Labs", website: "https://northstar.example", industry: "Technology", size: "51-200", location: "Austin, TX" }],
@@ -182,6 +182,7 @@ function createPracticeApi([id, title, category, short_desc, sample_response]) {
     { method: "GET", path: baseUrl, description: `Returns the ${collectionName} collection. Supports query parameters for search, filtering, sorting, and pagination practice.` },
     { method: "GET", path: `${baseUrl}/:id`, description: `Returns one ${collectionName.replace(/s$/, "")} using its ID.` },
     { method: "POST", path: baseUrl, description: `Validates a new ${collectionName.replace(/s$/, "")} request and returns a simulated response.` },
+    { method: "PUT", path: `${baseUrl}/:id`, description: "Validates a full update request and returns a simulated success; no data is saved." },
     { method: "PATCH", path: `${baseUrl}/:id`, description: "Validates a partial update request and returns the updated sample; no data is saved." },
     { method: "DELETE", path: `${baseUrl}/:id`, description: "Returns a simulated deletion response; no data is removed." },
   ];
@@ -203,12 +204,14 @@ function createPracticeApi([id, title, category, short_desc, sample_response]) {
     id, name: `${title} API`, short_desc, category,
     tags: [id, category.toLowerCase(), "json", "rest"],
     base_url: baseUrl,
-    description: `${short_desc} This frontend preview documents example REST routes and response shapes for practice. Backend behavior will be connected later.`,
+    description: `${short_desc} GET requests read sample records from PostgreSQL. POST, PUT, PATCH, and DELETE requests validate input and return simulated results without changing the database.`,
     endpoints,
     sample_response,
     usage_snippet: `fetch("${baseUrl}")\n  .then((response) => response.json())\n  .then((data) => console.log(data));`,
-    request_example: sample_response,
-    preview: true,
+    request_example: id === "auth"
+      ? { name: "Demo Student", email: "student@example.com", password: "sample-password" }
+      : sample_response,
+    practiceApi: true,
   };
 }
 
